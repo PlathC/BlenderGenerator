@@ -1,5 +1,8 @@
 import bpy
-import os
+import sys, os
 
-filename = os.path.join("_PATH_", "_FILE_NAME_.py")
+path = "_PATH_"
+file = "_MAIN_FILE_"
+sys.path.append(path)
+filename = os.path.join(path, file)
 exec(compile(open(filename).read(), filename, 'exec'))
