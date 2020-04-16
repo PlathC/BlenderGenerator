@@ -53,7 +53,6 @@ class Torus:
         vertices_increment = 0
         angle_step = (( 2 * math.pi ) / self.vertices_per_circles)
         angle = 0.
-        assert(self.vertices_per_circles > 0, "Vertices number should be > 0")
 
         # vertices generation
         for i in range(0, self.vertices_per_circles):
@@ -151,9 +150,10 @@ def torus():
 
     scene = bpy.context.scene
 
-    scene.objects.append(obj)  # put the object into the scene (link)
-    scene.objects.active = obj  # set as the active object in the scene
-    obj.select = True  # select object
+    bpy.context.collection.objects.link(obj)
+    bpy.context.view_layer.objects.active = obj  # set as the active object in the scene
+
+    bpy.data.objects["torus"].select_set(True)
 
     mesh = bpy.context.object.data
     bm = bmesh.new()
@@ -163,7 +163,18 @@ def torus():
 
     vert = t.vertices()
     for v in vert:
-        bm.verts.new(v)  # add a new vert
+        bm.verts.new((v.x, v.y, v.z))  # add a new vert
+
+    if hasattr(bm.verts, "ensure_lookup_table"):
+        bm.verts.ensure_lookup_table()
+
+    # indices = t.triangles()
+    # for i in range(0, len(indices), 3):
+    #     v1 = bm.verts[indices[i]]
+    #     v2 = bm.verts[indices[i+1]]
+    #     v3 = bm.verts[indices[i+2]]
+
+    #     bm.faces.new((v1, v2, v3))
 
     # make the bmesh the object's mesh
     bm.to_mesh(mesh)
