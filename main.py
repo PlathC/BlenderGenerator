@@ -1,9 +1,4 @@
-import scenes.torus
-
-
-def main():
-    scenes.torus.torus()
-
+from scenes import torus
 
 if __name__ == "__main__":
-    main()
+    torus.torus()
