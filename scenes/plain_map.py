@@ -14,7 +14,7 @@ def apply_material(obj):
     coordinate = mat.node_tree.nodes.new('ShaderNodeTexCoord')
     noise = mat.node_tree.nodes.new('ShaderNodeTexNoise')
     displacement = mat.node_tree.nodes.new('ShaderNodeDisplacement')
-
+    
     mat.node_tree.links.new(noise.inputs['Vector'], coordinate.outputs['UV'])
     mat.node_tree.links.new(displacement.inputs['Height'], noise.outputs['Fac'])
     mat.node_tree.links.new(output.inputs['Displacement'], displacement.outputs['Displacement'])
