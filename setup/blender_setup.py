@@ -1,8 +1,20 @@
+# When bpy is already in local, we know this is not the initial import...
+if "bpy" in locals():
+    # ...so we need to reload our submodule(s) using importlib
+    import importlib
+
+    if "BlenderGenerator" in locals():
+        importlib.reload(BlenderGenerator)
+
 import bpy
 import sys, os
 
-path = "_PATH_"
-file = "_MAIN_FILE_"
-sys.path.append(path)
-filename = os.path.join(path, file)
-exec(compile(open(filename).read(), filename, 'exec'))
+print(sys.path)
+
+path = "__PATH__"
+
+if path not in sys.path:
+    sys.path.append(path)
+
+import BlenderGenerator
+BlenderGenerator.main.main()
