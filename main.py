@@ -1,4 +1,9 @@
-import scenes.plain_map
+import scenes.torus
+
+
+def main():
+    scenes.torus.torus()
+
 
 if __name__ == "__main__":
-    scenes.plain_map.plain_map()
+    main()
