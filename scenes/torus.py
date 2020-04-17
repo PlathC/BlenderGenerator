@@ -177,6 +177,12 @@ def apply_material(obj):
     else:
         obj.data.materials.append(mat)
 
+    world_nodes = bpy.data.worlds["World"].node_tree
+    color_value = world_nodes.nodes.new('ShaderNodeValue')
+    color_value.outputs[0].default_value = 0.
+
+    world_nodes.links.new(world_nodes.nodes["Background"].inputs['Color'], color_value.outputs[0])
+
     scn = bpy.context.scene
     if not scn.render.engine == 'CYCLES':
         scn.render.engine = 'CYCLES'
