@@ -217,8 +217,8 @@ def torus():
 
     t = Torus()
 
-    vert = t.vertices()
-    for v in vert:
+    vertices = t.vertices()
+    for v in vertices:
         bm.verts.new((v.x, v.y, v.z))  # add a new vert
 
     if hasattr(bm.verts, "ensure_lookup_table"):
@@ -243,6 +243,7 @@ def torus():
     mesh.polygons.foreach_set("use_smooth", values)
 
     apply_material(obj)
+    bpy.data.objects['Camera'].location = [0, 0, 10]
     update_camera(bpy.data.objects['Camera'],
                   focus_point=obj.location,
                   distance=11.53)
