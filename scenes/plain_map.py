@@ -1,14 +1,16 @@
 import bpy
 
 
-def apply_material(obj):
+def apply_plain_map_material(obj):
     """
-
+    Apply plain map material to the object argument
+    :param obj: The object we want that material
     """
 
     mat = bpy.data.materials.new(name="PlainMapMaterial")
     mat.use_nodes = True
-    bsdf   = mat.node_tree.nodes["Principled BSDF"]
+
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
     output = mat.node_tree.nodes["Material Output"]
 
     coordinate = mat.node_tree.nodes.new('ShaderNodeTexCoord')
@@ -42,4 +44,4 @@ def plain_map():
     bpy.ops.mesh.subdivide(number_cuts=200)
     bpy.ops.object.mode_set(mode='OBJECT')
 
-    apply_material(plane)
+    apply_plain_map_material(plane)
