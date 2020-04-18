@@ -1,10 +1,17 @@
+import runpy
 import bpy
 import sys, os
+import importlib
 
-path = "D:\\Documents\\Cours\\UTBM\\S2\\IN55\\BlenderGenerator"
-file = "main.py"
-sys.path.append(path)
-filename = os.path.join(path, file)
-module = compile(open(filename).read(), filename, 'exec')
+#sys.path.remove("D:\\Projets\\Blender\\")
+#sys.path.remove("D:\\Projets\\Blender\\BlenderGenerator\\")
+paths = ["D:\\Projets\\Blender\\", "D:\\Projets\\Blender\\BlenderGenerator\\"]
+for path in paths:
+    if path not in sys.path:
+        sys.path.append(path)
 
-exec(module)
+import BlenderGenerator.main
+importlib.reload(BlenderGenerator.main)
+
+#runpy.run_module('BlenderGenerator')
+BlenderGenerator.main.main()
