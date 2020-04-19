@@ -7,7 +7,7 @@ import numpy
 # https://www.fountainware.com/Funware/Mandelbrot3D/Mandelbrot3d.htm
 class Mandelbulb:
 
-    def __init__(self, grid_size=1.8, step_size=0.05, max_iterations=6, degree=8):
+    def __init__(self, grid_size=3, step_size=0.05, max_iterations=6, degree=4):
         self.__grid_size = grid_size
         self.__step_size = step_size
         self.__max_iterations = max_iterations

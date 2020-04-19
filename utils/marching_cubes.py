@@ -294,6 +294,7 @@ tri_table = [
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
 ]
 
+
 class GridCell:
     def __init__(self, vertices, values):
         """
