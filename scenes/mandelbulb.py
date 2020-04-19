@@ -44,6 +44,10 @@ def mandelbulb():
         v3 = bm.verts[faces_indices[i][2]-1]
         bm.faces.new((v1, v2, v3))
 
+    bm.normal_update()
+
     # make the bmesh the object's mesh
     bm.to_mesh(mesh)
     bm.free()  # always do this when finished
+    values = [True] * len(mesh.polygons)
+    mesh.polygons.foreach_set("use_smooth", values)

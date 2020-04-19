@@ -4,9 +4,10 @@ import utils.marching_cubes
 import numpy
 
 
+# https://www.fountainware.com/Funware/Mandelbrot3D/Mandelbrot3d.htm
 class Mandelbulb:
 
-    def __init__(self, grid_size=1.8, step_size=0.1, max_iterations=1, degree=8):
+    def __init__(self, grid_size=1.8, step_size=0.05, max_iterations=6, degree=8):
         self.__grid_size = grid_size
         self.__step_size = step_size
         self.__max_iterations = max_iterations
@@ -33,12 +34,9 @@ class Mandelbulb:
 
                     values = []
                     for l in range(0, len(vertices)):
-                        values.append(math.sqrt(vertices[l].x * vertices[l].x +
-                                                vertices[l].y * vertices[l].y +
-                                                vertices[l].z * vertices[l].z)
-                                      - 1)
+                        values.append(self.is_in_mandelbulb(vertices[l]))
                     cell = utils.marching_cubes.GridCell(vertices, values)
-                    self.__faces.extend(utils.marching_cubes.marching_cubes(cell, 0))
+                    self.__faces.extend(utils.marching_cubes.marching_cubes(cell, 1))
 
         print(f"End of mesh generation found {str(len(self.__faces))} faces")
 
@@ -46,25 +44,27 @@ class Mandelbulb:
         """
 
         :param point: The point we want to test
-        :return: 0 if the point is in the Mandelbulb set
+        :return: a number <= 1 if the point is in the Mandelbulb set
         """
         c = point
+        result = 0
         for ite in range(0, self.__max_iterations):
-            r = math.sqrt(c.x * c.x + c.y * c.y + c.z * c.z)
+            r = c.length
             theta = math.atan2(math.sqrt(c.x * c.x + c.y * c.y), c.z)
             phi = math.atan2(c.y, c.x)
-            p = r ** self.__degree
+            p = math.pow(r, self.__degree)
             nv = mathutils.Vector((
                 p * math.sin(theta * self.__degree) * math.cos(phi * self.__degree),
                 p * math.sin(theta * self.__degree) * math.sin(phi * self.__degree),
                 p * math.cos(theta * self.__degree)
             ))
             c = mathutils.Vector((nv.x + c.x, nv.y + c.y, nv.z + c.z))
-            result = math.sqrt(c.x * c.x + c.y * c.y + c.z * c.z)
+
+            result = c.length
             if result > 1:
                 return 1
 
-        return 0
+        return result
 
     def vertices(self):
         return self.__vertices

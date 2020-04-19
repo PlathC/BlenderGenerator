@@ -325,9 +325,7 @@ def vertex_interpolation(isolevel, p1, p2, valp1, valp2):
     return p
 
 
-# https://github.com/Wenzy--/Marching-cube-in-Unity/blob/master/%5B1%5DMarchingCube/CPU/WenzyMarchingCubeCPU.cs
-# https://github.com/SebLague/Marching-Cubes/tree/master/Assets
-# https://github.com/ilastik/marching_cubes/blob/master/src/marching_cubes.cpp
+# http://paulbourke.net/geometry/polygonise/
 def marching_cubes(grid_cell, iso_level):
     i = 0
     n_triangle = 0
