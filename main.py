@@ -4,6 +4,7 @@ import utils.BlenderUtils
 import objects.Torus
 import scenes.torus
 import scenes.plain_map
+import scenes.mandelbulb
 
 
 def reload_modules_main():
@@ -16,4 +17,4 @@ def reload_modules_main():
 
 def main():
     reload_modules_main()
-    scenes.torus.torus()
+    scenes.mandelbulb.mandelbulb()
