@@ -33,9 +33,9 @@ edge_table = [
     0xe90, 0xf99, 0xc93, 0xd9a, 0xa96, 0xb9f, 0x895, 0x99c,
     0x69c, 0x795, 0x49f, 0x596, 0x29a, 0x393, 0x99 , 0x190,
     0xf00, 0xe09, 0xd03, 0xc0a, 0xb06, 0xa0f, 0x905, 0x80c,
-    0x70c, 0x605, 0x50f, 0x406, 0x30a, 0x203, 0x109, 0x0 ]
+    0x70c, 0x605, 0x50f, 0x406, 0x30a, 0x203, 0x109, 0x0]
 
-tri_trable = [
+tri_table = [
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
     [0, 8, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
     [0, 1, 9, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
@@ -308,13 +308,13 @@ def vertex_interpolation(isolevel, p1, p2, valp1, valp2):
     mu = 0.
     p = mathutils.Vector((0, 0, 0))
 
-    if math.fabs(isolevel - valp1) < 0.00001:
+    if math.isclose(isolevel - valp1, 0.00001, rel_tol=0.00001, abs_tol=0.00001):
         return p1
 
-    if math.fabs(isolevel - valp2) < 0.00001:
-        return p1
+    if math.isclose(isolevel - valp2, 0.00001, rel_tol=0.00001, abs_tol=0.00001):
+        return p2
 
-    if math.fabs(valp1 - valp2) < 0.00001:
+    if math.isclose(valp1 - valp2, 0.00001, rel_tol=0.00001, abs_tol=0.00001):
         return p1
 
     mu = (isolevel - valp1) / (valp2 - valp1)
@@ -331,9 +331,9 @@ def vertex_interpolation(isolevel, p1, p2, valp1, valp2):
 def marching_cubes(grid_cell, iso_level):
     i = 0
     n_triangle = 0
-    cube_index = 0
     vert_list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
+    cube_index = 0
     if grid_cell.values[0] < iso_level:
         cube_index = cube_index | 1
     if grid_cell.values[1] < iso_level:
@@ -357,7 +357,7 @@ def marching_cubes(grid_cell, iso_level):
     if edge_table[cube_index] & 1:
         vert_list[0] = vertex_interpolation(iso_level,
                                             grid_cell.vertices[0], grid_cell.vertices[1],
-                                            grid_cell.values[0], grid_cell.values[0])
+                                            grid_cell.values[0], grid_cell.values[1])
     if edge_table[cube_index] & 2:
         vert_list[1] = vertex_interpolation(iso_level,
                                             grid_cell.vertices[1], grid_cell.vertices[2],
@@ -368,8 +368,8 @@ def marching_cubes(grid_cell, iso_level):
                                             grid_cell.values[2], grid_cell.values[3])
     if edge_table[cube_index] & 8:
         vert_list[3] = vertex_interpolation(iso_level,
-                                            grid_cell.vertices[3], grid_cell.vertices[4],
-                                            grid_cell.values[3], grid_cell.values[4])
+                                            grid_cell.vertices[3], grid_cell.vertices[0],
+                                            grid_cell.values[3], grid_cell.values[0])
     if edge_table[cube_index] & 16:
         vert_list[4] = vertex_interpolation(iso_level,
                                             grid_cell.vertices[4], grid_cell.vertices[5],
@@ -384,35 +384,35 @@ def marching_cubes(grid_cell, iso_level):
                                             grid_cell.values[6], grid_cell.values[7])
     if edge_table[cube_index] & 128:
         vert_list[7] = vertex_interpolation(iso_level,
-                                            grid_cell.vertices[7], grid_cell.vertices[8],
-                                            grid_cell.values[7], grid_cell.values[8])
+                                            grid_cell.vertices[7], grid_cell.vertices[4],
+                                            grid_cell.values[7], grid_cell.values[4])
     if edge_table[cube_index] & 256:
         vert_list[8] = vertex_interpolation(iso_level,
-                                            grid_cell.vertices[8], grid_cell.vertices[8],
-                                            grid_cell.values[8], grid_cell.values[8])
+                                            grid_cell.vertices[0], grid_cell.vertices[4],
+                                            grid_cell.values[0], grid_cell.values[4])
     if edge_table[cube_index] & 512:
         vert_list[9] = vertex_interpolation(iso_level,
-                                            grid_cell.vertices[9], grid_cell.vertices[10],
-                                            grid_cell.values[9], grid_cell.values[10])
+                                            grid_cell.vertices[1], grid_cell.vertices[5],
+                                            grid_cell.values[1], grid_cell.values[5])
     if edge_table[cube_index] & 1024:
         vert_list[10] = vertex_interpolation(iso_level,
-                                             grid_cell.vertices[10], grid_cell.vertices[11],
-                                             grid_cell.values[10], grid_cell.values[11])
+                                             grid_cell.vertices[2], grid_cell.vertices[6],
+                                             grid_cell.values[2], grid_cell.values[6])
     if edge_table[cube_index] & 2048:
         vert_list[11] = vertex_interpolation(iso_level,
-                                             grid_cell.vertices[10], grid_cell.vertices[11],
-                                             grid_cell.values[10], grid_cell.values[11])
+                                             grid_cell.vertices[3], grid_cell.vertices[7],
+                                             grid_cell.values[3], grid_cell.values[7])
 
     triangles = []
     i = 0
-    while tri_trable[cube_index][i] != -1:
-        triangles.append(mathutils.Vector((
-            vert_list[tri_trable[cube_index][i]],
-            vert_list[tri_trable[cube_index][i+1]],
-            vert_list[tri_trable[cube_index][i+2]],
-        )))
-        n_triangle = n_triangle + 1
-        i = i + 3
+    while tri_table[cube_index][i] != -1:
+        triangles.append([
+            vert_list[tri_table[cube_index][i]],
+            vert_list[tri_table[cube_index][i + 1]],
+            vert_list[tri_table[cube_index][i + 2]],
+        ])
+        n_triangle += 1
+        i += 3
 
     return triangles
 
