@@ -72,18 +72,18 @@ def isosurface():
         v3 = bm.verts[faces_indices[i][2]-1]
         bm.faces.new((v1, v2, v3))
 
-    bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=0.00001)
+    #bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=0.00001)
     bm.normal_update()
 
     # make the bmesh the object's mesh
     bm.to_mesh(mesh)
     bm.free()  # always do this when finished
 
-    values = [True] * len(mesh.polygons)
-    mesh.polygons.foreach_set("use_smooth", values)
+    #values = [True] * len(mesh.polygons)
+    #mesh.polygons.foreach_set("use_smooth", values)
 
     bpy.context.view_layer.objects.active = obj
-    bpy.ops.object.modifier_add(type='SUBSURF')
+    #bpy.ops.object.modifier_add(type='SUBSURF')
 
     apply_fractal_material(obj)
 

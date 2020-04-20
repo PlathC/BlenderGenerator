@@ -31,24 +31,41 @@ class Heart(IsoSurface):
         return cube * cube * cube - x * x * z * z * z - (9. * y * y * z * z * z)/200.
 
 
+# https://strangerintheq.github.io/sdf.html
 class MengerSponge(IsoSurface):
-    def __init__(self, iterations):
+    def __init__(self, iterations=4):
         self.__iterations = iterations
 
     def isovalue(self):
-        return 0.
+        return 0.0
 
     def test_point(self, point):
+        z = mathutils.Vector((point.x, point.y, point.z, 2.))
+        offset = mathutils.Vector((0.785, 1.1, 0.46))
+        scale = 2
         for i in range(0, self.__iterations):
-            point = mathutils.Vector((math.fabs(point.x),
-                                      math.fabs(point.y),
-                                      math.fabs(point.z)))
-            point.xy = point.yx if point.x < point.y else point.xy
-            point.yz = point.zy if point.y < point.z else point.yz
-            point.xy = point.yx if point.x < point.y else point.xy
+            z = mathutils.Vector((math.fabs(z.x),
+                                  math.fabs(z.y),
+                                  math.fabs(z.z),
+                                  math.fabs(z.w)))
+            if z.x < z.y: 
+                z.xy = z.yx
+            if z.x < z.z:
+                z.xz = z.zx
+            if z.y < z.z:
+                z.yz = z.zy
+            z = z.xyzw * scale
+            z.xyz -= offset.xyz * (scale - 1.)
+            if z.z < -0.5 * offset.z * (scale - 1.0):
+                z.z += offset.z * (scale - 1.0)
 
-            point = point.xyz * 3.0 - 2.0
-            point.z =  point.z + 2. if point.z < - 1.0 else point.z
+        res = mathutils.Vector((
+              max(abs(z.x) - 1., 0.),
+              max(abs(z.y) - 1., 0.),
+              max(abs(z.z) - 1., 0.)
+        ))
+        res = (res.length - 0.05) / z.w
+        return res
 
 
 # https://www.fountainware.com/Funware/Mandelbrot3D/Mandelbrot3d.htm
@@ -147,7 +164,7 @@ class Moebius(IsoSurface):
 
 
 class IsoSurfaceGenerator:
-    def __init__(self, isosurface=Heart(), grid_size=8, step_size=0.05):
+    def __init__(self, isosurface=MengerSponge(), grid_size=8, step_size=0.1):
         self.__isosurface = isosurface
         self.__grid_size = grid_size
         self.__step_size = step_size
@@ -156,10 +173,13 @@ class IsoSurfaceGenerator:
         self.__faces = []
 
     def generate_mesh(self):
+        low = -(self.__grid_size / 2) - self.__step_size
+        up = (self.__grid_size / 2) + self.__step_size
         self.__faces = []
-        for i in numpy.arange(-(self.__grid_size / 2) - self.__step_size, (self.__grid_size / 2) + self.__step_size, self.__step_size):
-            for j in numpy.arange(-(self.__grid_size / 2) - self.__step_size, (self.__grid_size / 2) + self.__step_size, self.__step_size):
-                for k in numpy.arange(-(self.__grid_size / 2) - self.__step_size, (self.__grid_size / 2) + self.__step_size, self.__step_size):
+
+        for i in numpy.arange(low, up, self.__step_size):
+            for j in numpy.arange(low, up, self.__step_size):
+                for k in numpy.arange(low, up, self.__step_size):
                     vertices = [
                         mathutils.Vector((i, j, k + self.__step_size)),
                         mathutils.Vector((i + self.__step_size, j, k + self.__step_size)),
