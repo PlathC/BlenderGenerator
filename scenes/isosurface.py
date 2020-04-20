@@ -1,7 +1,7 @@
 import bpy
 import bmesh
 import utils.BlenderUtils
-from objects.Mandelbulb import Mandelbulb
+from objects.IsoSurfaceGenerator import IsoSurfaceGenerator
 
 
 def apply_fractal_material(obj):
@@ -35,24 +35,21 @@ def apply_fractal_material(obj):
         scn.render.engine = 'CYCLES'
 
 
-def mandelbulb():
-    mesh = bpy.data.meshes.new("mandelbulb_mesh")  # add a new mesh
-    obj = bpy.data.objects.new("mandelbulb", mesh)  # add a new object using the mesh
+def isosurface():
+    mesh = bpy.data.meshes.new("isosurface_mesh")  # add a new mesh
+    obj = bpy.data.objects.new("isosurface", mesh)  # add a new object using the mesh
 
     scene = bpy.context.scene
 
     bpy.context.collection.objects.link(obj)
     bpy.context.view_layer.objects.active = obj  # set as the active object in the scene
 
-    bpy.data.objects["mandelbulb"].select_set(True)
+    bpy.data.objects["isosurface"].select_set(True)
     mesh = bpy.context.object.data
     bm = bmesh.new()
 
-    m = Mandelbulb()
+    m = IsoSurfaceGenerator()
     m.generate_mesh()
-    # vertices = m.vertices()
-    # for v in vertices:
-    #     bm.verts.new((v.x, v.y, v.z))  # add a new vert
 
     faces = m.faces()
     faces_indices = []
