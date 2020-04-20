@@ -92,7 +92,7 @@ def mandelbulb():
 
     bpy.data.objects['Camera'].location = [3, 0, 0]
     utils.BlenderUtils.update_camera(bpy.data.objects['Camera'],
-                                         focus_point=obj.location,
-                                         distance=5)
+                                     focus_point=obj.location,
+                                     distance=5)
     scene.render.resolution_x = 1920
     scene.render.resolution_y = 1920
