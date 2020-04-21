@@ -10,7 +10,7 @@ This is a learning project which aims to create procedural mesh that will be ren
 | Marching cubes        | Done (slow version)                                          |
 | Isosurface rendering  | Heart, MengerSponge, Mandelbulb, Sphere, Torus, Genus2, RevolutionSurface, Moebius |
 | L - System            | To do                                                        |
-| Terrain generator     | To do                                                        |
+| Terrain generator     | In dev                                                       |
 | Reaction diffusion    | To do                                                        |
 
 ### Procedural meshes

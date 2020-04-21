@@ -19,6 +19,14 @@ class IsoSurface(ABC):
         pass
 
 
+class SimpleNoiseTerrain(IsoSurface):
+    def isovalue(self):
+        return 0.
+
+    def test_point(self, point):
+        return mathutils.noise.noise(point.xyz, noise_basis='PERLIN_ORIGINAL') - point.z
+
+
 class Heart(IsoSurface):
     def isovalue(self):
         return 0.
@@ -187,7 +195,7 @@ class Moebius(IsoSurface):
 
 
 class IsoSurfaceGenerator:
-    def __init__(self, isosurface=MengerSponge(), grid_size=4, step_size=0.05):
+    def __init__(self, isosurface=SimpleNoiseTerrain(), grid_size=9, step_size=0.1):
         self.__isosurface = isosurface
         self.__grid_size = grid_size
         self.__step_size = step_size

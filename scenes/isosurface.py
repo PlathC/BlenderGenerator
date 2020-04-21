@@ -79,10 +79,12 @@ def isosurface():
     bm.to_mesh(mesh)
     bm.free()  # always do this when finished
 
-    #values = [True] * len(mesh.polygons)
-    #mesh.polygons.foreach_set("use_smooth", values)
+    values = [True] * len(mesh.polygons)
+    mesh.polygons.foreach_set("use_smooth", values)
 
     bpy.context.view_layer.objects.active = obj
+
+    # Do not turn on on big grid size unless you have a lot of ram (>= 16).
     #bpy.ops.object.modifier_add(type='SUBSURF')
 
     apply_fractal_material(obj)
