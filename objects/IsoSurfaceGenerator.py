@@ -33,39 +33,62 @@ class Heart(IsoSurface):
 
 # https://strangerintheq.github.io/sdf.html
 class MengerSponge(IsoSurface):
-    def __init__(self, iterations=4):
+    """
+    To be generated with grid of size 4 and step 0.05
+    """
+    def __init__(self, iterations=5):
         self.__iterations = iterations
 
     def isovalue(self):
         return 0.0
 
-    def test_point(self, point):
-        z = mathutils.Vector((point.x, point.y, point.z, 2.))
-        offset = mathutils.Vector((0.785, 1.1, 0.46))
-        scale = 2
-        for i in range(0, self.__iterations):
-            z = mathutils.Vector((math.fabs(z.x),
-                                  math.fabs(z.y),
-                                  math.fabs(z.z),
-                                  math.fabs(z.w)))
-            if z.x < z.y: 
-                z.xy = z.yx
-            if z.x < z.z:
-                z.xz = z.zx
-            if z.y < z.z:
-                z.yz = z.zy
-            z = z.xyzw * scale
-            z.xyz -= offset.xyz * (scale - 1.)
-            if z.z < -0.5 * offset.z * (scale - 1.0):
-                z.z += offset.z * (scale - 1.0)
+    def __test_point_box(self, point, b):
+        d = mathutils.Vector((math.fabs(point.x) - b.x,
+                               math.fabs(point.y) - b.y,
+                               math.fabs(point.z) - b.z))
+        return min(max(d.x, max(d.y, d.z)), 0.) + \
+               mathutils.Vector((max(d.x, 0),
+                                 max(d.y, 0),
+                                 max(d.z, 0))).length
 
-        res = mathutils.Vector((
-              max(abs(z.x) - 1., 0.),
-              max(abs(z.y) - 1., 0.),
-              max(abs(z.z) - 1., 0.)
-        ))
-        res = (res.length - 0.05) / z.w
-        return res
+    def test_point(self, point):
+        # https://www.shadertoy.com/view/MdfBWr
+        main_width_box = 2.
+        inf = 1.
+        hole_x = 0.
+        hole_y = 0.
+        hole_z = 0.
+        hole_width_b = main_width_box / 3.0
+
+        menger = self.__test_point_box(point, mathutils.Vector((main_width_box, main_width_box, main_width_box)))
+        for i in range(0, self.__iterations):
+            hole_distance = hole_width_b * 6.
+
+            c = mathutils.Vector((hole_distance, hole_distance, hole_distance))
+
+            sx = (point.x + hole_width_b)
+            sy = (point.y + hole_width_b)
+            sz = (point.z + hole_width_b)
+            q = mathutils.Vector((sx - c.x * math.floor(sx / c.x),
+                                  sy - c.y * math.floor(sy / c.y),
+                                  sz - c.z * math.floor(sz / c.z))).xyz\
+                - mathutils.Vector((hole_width_b, hole_width_b, hole_width_b))
+
+            hole_x = self.__test_point_box(q, mathutils.Vector((
+                inf, hole_width_b, hole_width_b
+            )))
+
+            hole_y = self.__test_point_box(q, mathutils.Vector((
+                hole_width_b, inf, hole_width_b
+            )))
+
+            hole_z = self.__test_point_box(q, mathutils.Vector((
+                hole_width_b, hole_width_b, inf
+            )))
+
+            hole_width_b = hole_width_b / 3.0
+            menger = max(max(max(menger, -hole_x), -hole_y), -hole_z)
+        return menger
 
 
 # https://www.fountainware.com/Funware/Mandelbrot3D/Mandelbrot3d.htm
@@ -164,7 +187,7 @@ class Moebius(IsoSurface):
 
 
 class IsoSurfaceGenerator:
-    def __init__(self, isosurface=MengerSponge(), grid_size=8, step_size=0.1):
+    def __init__(self, isosurface=MengerSponge(), grid_size=4, step_size=0.05):
         self.__isosurface = isosurface
         self.__grid_size = grid_size
         self.__step_size = step_size
