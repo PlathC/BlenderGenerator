@@ -33,4 +33,8 @@ Here are some outputs of Mandelbulb:
 
 ![Mandelbulb](output/Resized/Mandelbrot3.png) ![Mandelbulb](output/Resized/Mandelbulb4.png) 
 
+Menger Sponge :
+
+![MengerSponge](output/Resized/MengerSponge.png) 
+
 

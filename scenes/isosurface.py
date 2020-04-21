@@ -72,7 +72,7 @@ def isosurface():
         v3 = bm.verts[faces_indices[i][2]-1]
         bm.faces.new((v1, v2, v3))
 
-    #bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=0.00001)
+    bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=0.00001)
     bm.normal_update()
 
     # make the bmesh the object's mesh
