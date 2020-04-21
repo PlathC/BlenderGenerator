@@ -2,35 +2,7 @@ import bpy
 import bmesh
 import utils.BlenderUtils
 from objects.Torus import Torus
-
-
-def apply_torus_material(obj):
-    """
-    Apply torus material to argument object.
-    :param obj: The object we want to apply the torus material
-    """
-
-    mat = bpy.data.materials.new(name="TorusMaterial")
-    mat.use_nodes = True
-    bsdf = mat.node_tree.nodes["Principled BSDF"]
-
-    bsdf.inputs["Base Color"].default_value = (0., 0., 0., 0.)
-
-    # Assign it to object
-    if obj.data.materials:
-        obj.data.materials[0] = mat
-    else:
-        obj.data.materials.append(mat)
-
-    world_nodes = bpy.data.worlds["World"].node_tree
-    color_value = world_nodes.nodes.new('ShaderNodeValue')
-    color_value.outputs[0].default_value = 0.
-
-    world_nodes.links.new(world_nodes.nodes["Background"].inputs['Color'], color_value.outputs[0])
-
-    scn = bpy.context.scene
-    if not scn.render.engine == 'CYCLES':
-        scn.render.engine = 'CYCLES'
+import objects.Materials
 
 
 def torus():
@@ -74,7 +46,7 @@ def torus():
     values = [True] * len(mesh.polygons)
     mesh.polygons.foreach_set("use_smooth", values)
 
-    apply_torus_material(obj)
+    objects.Materials.SmoothColor((0., 0., 0., 0.)).apply_material(obj)
     bpy.data.objects['Camera'].location = [0, 0, 10]
     utils.BlenderUtils.update_camera(bpy.data.objects['Camera'],
                                      focus_point=obj.location,

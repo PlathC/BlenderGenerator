@@ -3,7 +3,7 @@ import math
 import utils.marching_cubes
 import numpy
 from abc import ABC, abstractmethod
-
+import objects.Materials
 
 def clamp(n, smallest, largest):
     return max(smallest, min(n, largest))
@@ -18,6 +18,10 @@ class IsoSurface(ABC):
     def test_point(self, point):
         pass
 
+    @abstractmethod
+    def material(self):
+        pass
+
 
 class SimpleNoiseTerrain(IsoSurface):
     def isovalue(self):
@@ -25,6 +29,9 @@ class SimpleNoiseTerrain(IsoSurface):
 
     def test_point(self, point):
         return mathutils.noise.noise(point.xyz, noise_basis='PERLIN_ORIGINAL') - point.z
+
+    def material(self):
+        return objects.Materials.HeightMapColor()
 
 
 class Heart(IsoSurface):
@@ -37,6 +44,9 @@ class Heart(IsoSurface):
         z = point.z
         cube = (x * x + 9./4. * y * y + z * z - 1)
         return cube * cube * cube - x * x * z * z * z - (9. * y * y * z * z * z)/200.
+
+    def material(self):
+        return objects.Materials.SmoothColor(color=(1., 0., 0., 0.))
 
 
 # https://strangerintheq.github.io/sdf.html
@@ -98,6 +108,9 @@ class MengerSponge(IsoSurface):
             menger = max(max(max(menger, -hole_x), -hole_y), -hole_z)
         return menger
 
+    def material(self):
+        return objects.Materials.SmoothColor(color=(0.1, 0.1, 0.1, 0.))
+
 
 # https://www.fountainware.com/Funware/Mandelbrot3D/Mandelbrot3d.htm
 class Mandelbulb(IsoSurface):
@@ -133,6 +146,9 @@ class Mandelbulb(IsoSurface):
 
         return result
 
+    def material(self):
+        return objects.Materials.SmoothColor(color=(0.1, 0.1, 0.1, 0.))
+
 
 class Sphere(IsoSurface):
     def __init__(self, radius=1):
@@ -143,6 +159,9 @@ class Sphere(IsoSurface):
 
     def test_point(self, point):
         return point.length_squared - self.__radius
+
+    def material(self):
+        return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
 
 
 class Torus(IsoSurface):
@@ -163,6 +182,9 @@ class Torus(IsoSurface):
         return power * power - \
                4 * (self.__fradius * self.__fradius) * (point.x * point.x + point.y * point.y)
 
+    def material(self):
+        return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
+
 
 class Genus2(IsoSurface):
     def isovalue(self):
@@ -174,6 +196,9 @@ class Genus2(IsoSurface):
                (point.x * point.x + point.y * point.y) - (9 * point.z * point.z - 1) * \
                (1 - point.z * point.z)
 
+    def material(self):
+        return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
+
 
 class RevolutionSurface(IsoSurface):
     def isovalue(self):
@@ -182,6 +207,9 @@ class RevolutionSurface(IsoSurface):
     def test_point(self, point):
         ln_z = (numpy.log(point.z + 3.2))
         return point.x * point.x + point.y * point.y - (ln_z * ln_z) - 0.02
+
+    def material(self):
+        return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
 
 
 class Moebius(IsoSurface):
@@ -193,9 +221,12 @@ class Moebius(IsoSurface):
                point.y * point.y * point.y - point.y - 2 * point.x * point.z \
                - 2 * point.x * point.x * point.z - 2 * point.y * point.y * point.z
 
+    def material(self):
+        return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
+
 
 class IsoSurfaceGenerator:
-    def __init__(self, isosurface=SimpleNoiseTerrain(), grid_size=9, step_size=0.1):
+    def __init__(self, isosurface=Heart(), grid_size=9, step_size=0.1):
         self.__isosurface = isosurface
         self.__grid_size = grid_size
         self.__step_size = step_size
@@ -236,3 +267,6 @@ class IsoSurfaceGenerator:
 
     def faces(self):
         return self.__faces
+
+    def material(self):
+        return self.__isosurface.material()
