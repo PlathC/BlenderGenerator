@@ -9,7 +9,7 @@ This is a learning project which aims to create procedural mesh that will be ren
 | Procedural meshes     | Torus                                                        |
 | Marching cubes        | Done (slow version)                                          |
 | Isosurface rendering  | Heart, MengerSponge, Mandelbulb, Sphere, Torus, Genus2, RevolutionSurface, Moebius |
-| L - System            | To do                                                        |
+| L - System            | In dev                                                       |
 | Terrain generator     | In dev                                                       |
 | Reaction diffusion    | To do                                                        |
 
@@ -37,4 +37,11 @@ Menger Sponge :
 
 ![MengerSponge](output/Resized/MengerSponge.png) 
 
+### Terrain 
+
+A terrain generator has been implemented based on different technologies:
+
+__Marching cubes and noise__
+
+![NoiseTerrain](output/Resized/NoiseTerrain.png)
 
