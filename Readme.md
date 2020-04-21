@@ -29,8 +29,8 @@ __Results__:
 
 Here are some outputs of Mandelbulb:
 
-![Mandelbulb](output/Resized/Mandelbrot.png) ![Mandelbulb](output/Resized/Mandelbrot1.png) 
+![Mandelbulb](output/Resized/Mandelbrot.png) ![Mandelbulb](output/Resized/Mandelbrot1.png) ![Mandelbulb](output/Resized/Mandelbrot2.png)
 
-![Mandelbulb](output/Resized/Mandelbrot2.png) ![Mandelbulb](output/Resized/Mandelbrot3.png) 
+![Mandelbulb](output/Resized/Mandelbrot3.png) ![Mandelbulb](output/Resized/Mandelbulb4.png) 
 
-![Mandelbulb](output/Resized/Mandelbulb4.png) 
+
