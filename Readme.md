@@ -4,6 +4,15 @@ This is a learning project which aims to create procedural mesh that will be ren
 
 ## Features
 
+| Feature               | Progress                                                     |
+|-----------------------|--------------------------------------------------------------|
+| Procedural meshes     | Torus                                                        |
+| Marching cubes        | Done (slow version)                                          |
+| Isosurface rendering  | Heart, MengerSponge, Mandelbulb, Sphere, Torus, Genus2, RevolutionSurface, Moebius |
+| L - System            | To do                                                        |
+| Terrain generator     | To do                                                        |
+| Reaction diffusion    | To do                                                        |
+
 ### Procedural meshes
 
 This project allows to create a torus mesh based on its formula and to render it 
