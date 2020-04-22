@@ -325,6 +325,43 @@ def simple_vertex_interpolation(isolevel, p1, p2, valp1, valp2):
 
     return p
 
+def point_is_greater_than(p1, p2):
+    if p1.x < p2.x:
+        return True
+    elif p1.x > p2.x:
+        return False
+
+    if p1.y < p2.y:
+        return True
+    elif p1.y > p2.y:
+        return False
+
+    if p1.z < p2.z:
+        return True
+    elif p1.z > p2.z:
+        return False
+
+    return False
+
+
+def linear_vertex_interpolation(isolevel, p1, p2, valp1, valp2):
+    if point_is_greater_than(p2, p1):
+        temp = p1
+        temp_value = valp1
+
+        p1 = p2
+        valp1 = valp2
+        p2 = temp
+        valp2 = temp_value
+
+    p = mathutils.Vector((0, 0, 0))
+    if not math.isclose(math.fabs(valp1 - valp2), 0.00001, rel_tol=0.00001, abs_tol=0.00001):
+        p = p1.xyz + (p2.xyz - p1.xyz) / (valp2 - valp1) * (isolevel - valp1)
+    else:
+        p = p1
+
+    return p
+
 
 # http://paulbourke.net/geometry/polygonise/
 def marching_cubes(grid_cell, iso_level):
@@ -354,51 +391,51 @@ def marching_cubes(grid_cell, iso_level):
         return []
 
     if edge_table[cube_index] & 1:
-        vert_list[0] = simple_vertex_interpolation(iso_level,
+        vert_list[0] = linear_vertex_interpolation(iso_level,
                                             grid_cell.vertices[0], grid_cell.vertices[1],
                                             grid_cell.values[0], grid_cell.values[1])
     if edge_table[cube_index] & 2:
-        vert_list[1] = simple_vertex_interpolation(iso_level,
+        vert_list[1] = linear_vertex_interpolation(iso_level,
                                             grid_cell.vertices[1], grid_cell.vertices[2],
                                             grid_cell.values[1], grid_cell.values[2])
     if edge_table[cube_index] & 4:
-        vert_list[2] = simple_vertex_interpolation(iso_level,
+        vert_list[2] = linear_vertex_interpolation(iso_level,
                                             grid_cell.vertices[2], grid_cell.vertices[3],
                                             grid_cell.values[2], grid_cell.values[3])
     if edge_table[cube_index] & 8:
-        vert_list[3] = simple_vertex_interpolation(iso_level,
+        vert_list[3] = linear_vertex_interpolation(iso_level,
                                             grid_cell.vertices[3], grid_cell.vertices[0],
                                             grid_cell.values[3], grid_cell.values[0])
     if edge_table[cube_index] & 16:
-        vert_list[4] = simple_vertex_interpolation(iso_level,
+        vert_list[4] = linear_vertex_interpolation(iso_level,
                                             grid_cell.vertices[4], grid_cell.vertices[5],
                                             grid_cell.values[4], grid_cell.values[5])
     if edge_table[cube_index] & 32:
-        vert_list[5] = simple_vertex_interpolation(iso_level,
+        vert_list[5] = linear_vertex_interpolation(iso_level,
                                             grid_cell.vertices[5], grid_cell.vertices[6],
                                             grid_cell.values[5], grid_cell.values[6])
     if edge_table[cube_index] & 64:
-        vert_list[6] = simple_vertex_interpolation(iso_level,
+        vert_list[6] = linear_vertex_interpolation(iso_level,
                                             grid_cell.vertices[6], grid_cell.vertices[7],
                                             grid_cell.values[6], grid_cell.values[7])
     if edge_table[cube_index] & 128:
-        vert_list[7] = simple_vertex_interpolation(iso_level,
+        vert_list[7] = linear_vertex_interpolation(iso_level,
                                             grid_cell.vertices[7], grid_cell.vertices[4],
                                             grid_cell.values[7], grid_cell.values[4])
     if edge_table[cube_index] & 256:
-        vert_list[8] = simple_vertex_interpolation(iso_level,
+        vert_list[8] = linear_vertex_interpolation(iso_level,
                                             grid_cell.vertices[0], grid_cell.vertices[4],
                                             grid_cell.values[0], grid_cell.values[4])
     if edge_table[cube_index] & 512:
-        vert_list[9] = simple_vertex_interpolation(iso_level,
+        vert_list[9] = linear_vertex_interpolation(iso_level,
                                             grid_cell.vertices[1], grid_cell.vertices[5],
                                             grid_cell.values[1], grid_cell.values[5])
     if edge_table[cube_index] & 1024:
-        vert_list[10] = simple_vertex_interpolation(iso_level,
+        vert_list[10] = linear_vertex_interpolation(iso_level,
                                              grid_cell.vertices[2], grid_cell.vertices[6],
                                              grid_cell.values[2], grid_cell.values[6])
     if edge_table[cube_index] & 2048:
-        vert_list[11] = simple_vertex_interpolation(iso_level,
+        vert_list[11] = linear_vertex_interpolation(iso_level,
                                              grid_cell.vertices[3], grid_cell.vertices[7],
                                              grid_cell.values[3], grid_cell.values[7])
 
