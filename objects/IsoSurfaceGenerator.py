@@ -23,6 +23,35 @@ class IsoSurface(ABC):
         pass
 
 
+class Planet(IsoSurface):
+    def __init__(self, radius=1, noise_type=1):
+        self.__radius = radius
+        self.__sphere = Sphere(self.__radius)
+        self.__noise = [
+            lambda p: mathutils.noise.cell(p),
+            lambda p: mathutils.noise.fractal(p, 1.0, 2.0, 8),
+            lambda p: mathutils.noise.hetero_terrain(p, 1.0, 2.0, 8, 0),
+            lambda p: mathutils.noise.hybrid_multi_fractal(p, 1.0, 2.0, 8, 0, 1),
+            lambda p: mathutils.noise.multi_fractal(p, .5, 2.0, 8),
+            lambda p: mathutils.noise.noise(p),
+            lambda p: mathutils.noise.ridged_multi_fractal(p, .5, 2.0, 8, 1, 0),
+            lambda p: mathutils.noise.turbulence(p, 8, True),
+            lambda p: mathutils.noise.variable_lacunarity(p, 1),
+            lambda p: mathutils.noise.voronoi(p),
+        ]
+        self.__noise_type = noise_type
+
+    def isovalue(self):
+        return 0.
+
+    def test_point(self, point):
+        return self.__sphere.test_point(point) + \
+               mathutils.noise.hybrid_multi_fractal(point.normalized(), 1., 10.0, 12, 1, 50) * (self.__radius/3)
+
+    def material(self):
+        return objects.Materials.SmoothColor((1., 1., 1., 1.))
+
+
 class SimpleNoiseTerrain(IsoSurface):
     def isovalue(self):
         return 0.
@@ -226,7 +255,7 @@ class Moebius(IsoSurface):
 
 
 class IsoSurfaceGenerator:
-    def __init__(self, isosurface=Heart(), grid_size=9, step_size=0.1):
+    def __init__(self, isosurface=Planet(), grid_size=2, step_size=0.05):
         self.__isosurface = isosurface
         self.__grid_size = grid_size
         self.__step_size = step_size

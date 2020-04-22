@@ -1,12 +1,11 @@
 import math
-from utils.Vec3 import Vec3
-
+import mathutils
 # Based on https://gamedev.stackexchange.com/questions/16845/how-do-i-generate-a-torus-mesh
 
 
 class Torus:
 
-    def __init__(self, origin=Vec3(), first_circle_diameter=2, second_circle_diameter=1.5, vertices_per_circles=80):
+    def __init__(self, origin=mathutils.Vector((0, 0, 0)), first_circle_diameter=2, second_circle_diameter=1.5, vertices_per_circles=80):
         """
         Torus ctor.
         Call generate function.
@@ -38,7 +37,7 @@ class Torus:
         :param u: Current angle
         :return: Point corresponding to angle.
         """
-        return Vec3(math.cos(u), math.sin(u), 0)
+        return mathutils.Vector((math.cos(u), math.sin(u), 0))
 
     def __get_q(self, u, v):
         """
@@ -54,17 +53,15 @@ class Torus:
         self.__vertices_number += 1
 
         w = self.__get_w(u)
-        fc = Vec3(self.__fc_diameter * w.x,
-                  self.__fc_diameter * w.y,
-                  self.__fc_diameter * w.z)
+        fc = self.__fc_diameter * w.xyz
 
         cosv = math.cos(v)
-        sc = Vec3(self.__sc_diameter * w.x * cosv,
-                  self.__sc_diameter * w.y * cosv,
-                  self.__sc_diameter * w.z * cosv)
-        ls = Vec3(0, 0, self.__sc_diameter * math.sin(v))
+        sc = self.__sc_diameter * w.xyz
+        ls = mathutils.Vector((0,
+                               0,
+                               self.__sc_diameter * math.sin(v)))
 
-        return self.__origin + fc + sc + ls
+        return self.__origin.xyz + fc.xyz + sc.xyz + ls.xyz
 
     def generate(self):
         """
