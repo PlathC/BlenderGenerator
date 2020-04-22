@@ -11,7 +11,6 @@ This is a learning project which aims to create procedural mesh that will be ren
 | Isosurface rendering  | Heart, MengerSponge, Mandelbulb, Sphere, Torus, Genus2, RevolutionSurface, Moebius |
 | L - System            | In dev                                                       |
 | Terrain generator     | In dev                                                       |
-| Reaction diffusion    | To do                                                        |
 
 ### Procedural meshes
 
