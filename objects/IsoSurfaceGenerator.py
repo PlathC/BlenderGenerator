@@ -143,7 +143,7 @@ class MengerSponge(IsoSurface):
 
 # https://www.fountainware.com/Funware/Mandelbrot3D/Mandelbrot3d.htm
 class Mandelbulb(IsoSurface):
-    def __init__(self, max_iterations=6, degree=8):
+    def __init__(self, max_iterations=5, degree=3):
         self.__max_iterations = max_iterations
         self.__degree = degree
 
@@ -153,7 +153,6 @@ class Mandelbulb(IsoSurface):
     def test_point(self, point):
         """
         :param point: The point we want to test
-        :return: a number <= 1 if the point is in the Mandelbulb set
         """
         c = point
         result = 0
@@ -208,8 +207,9 @@ class Torus(IsoSurface):
                 self.__fradius * self.__fradius - \
                 self.__sradius * self.__sradius
 
-        return power * power - \
-               4 * (self.__fradius * self.__fradius) * (point.x * point.x + point.y * point.y)
+        return power * power - 4 * \
+               (self.__fradius * self.__fradius) *\
+               (point.x * point.x + point.y * point.y)
 
     def material(self):
         return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
@@ -255,7 +255,7 @@ class Moebius(IsoSurface):
 
 
 class IsoSurfaceGenerator:
-    def __init__(self, isosurface=Planet(), grid_size=2, step_size=0.05):
+    def __init__(self, isosurface=Mandelbulb(), grid_size=2.7, step_size=0.005):
         self.__isosurface = isosurface
         self.__grid_size = grid_size
         self.__step_size = step_size
