@@ -32,6 +32,12 @@ Here are some outputs of Mandelbulb:
 
 ![Mandelbulb](output/Resized/Mandelbrot3.png) ![Mandelbulb](output/Resized/Mandelbulb4.png) 
 
+High resolution outputs :
+
+__grid_size=2.5, step_size=0.005, max_iterations=6, degree=8__
+
+![MandelbulbHighRes](output/Resized/MandelbulbHighRes.png)
+
 Menger Sponge :
 
 ![MengerSponge](output/Resized/MengerSponge.png) 
