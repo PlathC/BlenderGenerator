@@ -6,8 +6,10 @@ import objects.IsoSurfaceGenerator
 import scenes.torus
 import scenes.isosurface
 import scenes.tree
+import scenes.Map
 import objects.Materials
 import objects.Tree
+import faulthandler
 
 
 def reload_modules_main():
@@ -20,8 +22,11 @@ def reload_modules_main():
     importlib.reload(scenes.torus)
     importlib.reload(scenes.isosurface)
     importlib.reload(scenes.tree)
+    importlib.reload(scenes.Map)
 
 
 def main():
     reload_modules_main()
-    scenes.tree.tree()
+    faulthandler.enable()
+    scenes.Map.Map()
+    faulthandler.dump_traceback()

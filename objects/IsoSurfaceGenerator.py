@@ -27,19 +27,6 @@ class Planet(IsoSurface):
     def __init__(self, radius=1, noise_type=1):
         self.__radius = radius
         self.__sphere = Sphere(self.__radius)
-        self.__noise = [
-            lambda p: mathutils.noise.cell(p),
-            lambda p: mathutils.noise.fractal(p, 1.0, 2.0, 8),
-            lambda p: mathutils.noise.hetero_terrain(p, 1.0, 2.0, 8, 0),
-            lambda p: mathutils.noise.hybrid_multi_fractal(p, 1.0, 2.0, 8, 0, 1),
-            lambda p: mathutils.noise.multi_fractal(p, .5, 2.0, 8),
-            lambda p: mathutils.noise.noise(p),
-            lambda p: mathutils.noise.ridged_multi_fractal(p, .5, 2.0, 8, 1, 0),
-            lambda p: mathutils.noise.turbulence(p, 8, True),
-            lambda p: mathutils.noise.variable_lacunarity(p, 1),
-            lambda p: mathutils.noise.voronoi(p),
-        ]
-        self.__noise_type = noise_type
 
     def isovalue(self):
         return 0.
@@ -50,6 +37,26 @@ class Planet(IsoSurface):
 
     def material(self):
         return objects.Materials.SmoothColor((1., 1., 1., 1.))
+
+
+class ComplexTerrain(IsoSurface):
+    def isovalue(self):
+        return 0.
+
+    def test_point(self, point):
+        q = mathutils.Vector((mathutils.noise.noise(point.xyz + mathutils.Vector((0, 0, 0))),
+                              mathutils.noise.noise(point.xyz + mathutils.Vector((5.2, 1.3, 0))),
+                              0)
+                             )
+        r = mathutils.Vector((mathutils.noise.noise(point.xyz + 4.0*q.xyz + mathutils.Vector((1.7, 9.2, 0)).xyz),
+                              mathutils.noise.noise(point.xyz + 4.0*q.xyz + mathutils.Vector((8.3, 2.8, 0)).xyz),
+                              0)
+                             )
+
+        return mathutils.noise.noise((point.xyz + 4.0 * r.xyz).xyz) - point.z * 10
+
+    def material(self):
+        return objects.Materials.HeightMapColor()
 
 
 class SimpleNoiseTerrain(IsoSurface):
@@ -255,7 +262,7 @@ class Moebius(IsoSurface):
 
 
 class IsoSurfaceGenerator:
-    def __init__(self, isosurface=Mandelbulb(), grid_size=2.7, step_size=0.005):
+    def __init__(self, isosurface=ComplexTerrain(), grid_size=10, step_size=0.02):
         self.__isosurface = isosurface
         self.__grid_size = grid_size
         self.__step_size = step_size
@@ -270,7 +277,7 @@ class IsoSurfaceGenerator:
 
         for i in numpy.arange(low, up, self.__step_size):
             for j in numpy.arange(low, up, self.__step_size):
-                for k in numpy.arange(low, up, self.__step_size):
+                for k in numpy.arange(-(2 / 2) - self.__step_size, (2 / 2) - self.__step_size, self.__step_size):
                     vertices = [
                         mathutils.Vector((i, j, k + self.__step_size)),
                         mathutils.Vector((i + self.__step_size, j, k + self.__step_size)),
