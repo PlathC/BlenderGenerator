@@ -5,6 +5,7 @@ import numpy
 from abc import ABC, abstractmethod
 import objects.Materials
 
+
 def clamp(n, smallest, largest):
     return max(smallest, min(n, largest))
 
