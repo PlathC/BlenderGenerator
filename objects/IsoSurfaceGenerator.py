@@ -24,7 +24,7 @@ class IsoSurface(ABC):
 
 
 class Planet(IsoSurface):
-    def __init__(self, radius=1, noise_type=1):
+    def __init__(self, radius=1):
         self.__radius = radius
         self.__sphere = Sphere(self.__radius)
 
@@ -71,6 +71,9 @@ class SimpleNoiseTerrain(IsoSurface):
 
 
 class Heart(IsoSurface):
+    def __init__(self, stretch_factor=8, size=100):
+        self.__stretch = stretch_factor * 100
+
     def isovalue(self):
         return 0.
 
@@ -79,7 +82,7 @@ class Heart(IsoSurface):
         y = point.y
         z = point.z
         cube = (x * x + 9./4. * y * y + z * z - 1)
-        return cube * cube * cube - x * x * z * z * z - (9. * y * y * z * z * z)/200.
+        return cube * cube * cube - x * x * z * z * z - (9. * y * y * z * z * z)/200. * self.__stretch
 
     def material(self):
         return objects.Materials.SmoothColor(color=(1., 0., 0., 0.))
@@ -237,32 +240,39 @@ class Genus2(IsoSurface):
 
 
 class RevolutionSurface(IsoSurface):
+    def __init__(self, height=2.2, radius=3.02):
+        self.__height = height
+        self.__radius = radius
+
     def isovalue(self):
         return 0.
 
     def test_point(self, point):
-        ln_z = (numpy.log(point.z + 3.2))
-        return point.x * point.x + point.y * point.y - (ln_z * ln_z) - 0.02
+        ln_z = (numpy.log(point.z + self.__height))
+        return point.x * point.x + point.y * point.y - (ln_z * ln_z) - self.__radius
 
     def material(self):
         return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
 
 
 class Moebius(IsoSurface):
+    def __init__(self, curve=0.8):
+        self.__curve = curve
+
     def isovalue(self):
         return 0.
 
     def test_point(self, point):
         return point.x * point.x * point.y + point.y * point.z * point.z +\
-               point.y * point.y * point.y - point.y - 2 * point.x * point.z \
-               - 2 * point.x * point.x * point.z - 2 * point.y * point.y * point.z
+               point.y * point.y * point.y - point.y - self.__curve * point.x * point.z \
+               - self.__curve * point.x * point.x * point.z - self.__curve * point.y * point.y * point.z
 
     def material(self):
         return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
 
 
 class IsoSurfaceGenerator:
-    def __init__(self, isosurface=ComplexTerrain(), grid_size=10, step_size=0.02):
+    def __init__(self, isosurface=Moebius(), grid_size=3, step_size=0.1):
         self.__isosurface = isosurface
         self.__grid_size = grid_size
         self.__step_size = step_size
@@ -277,7 +287,7 @@ class IsoSurfaceGenerator:
 
         for i in numpy.arange(low, up, self.__step_size):
             for j in numpy.arange(low, up, self.__step_size):
-                for k in numpy.arange(-(2 / 2) - self.__step_size, (2 / 2) - self.__step_size, self.__step_size):
+                for k in numpy.arange(low, up, self.__step_size):
                     vertices = [
                         mathutils.Vector((i, j, k + self.__step_size)),
                         mathutils.Vector((i + self.__step_size, j, k + self.__step_size)),

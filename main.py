@@ -27,6 +27,4 @@ def reload_modules_main():
 
 def main():
     reload_modules_main()
-    faulthandler.enable()
-    scenes.Map.Map()
-    faulthandler.dump_traceback()
+    scenes.isosurface.isosurface()
