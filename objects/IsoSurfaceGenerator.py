@@ -271,9 +271,60 @@ class Moebius(IsoSurface):
     def material(self):
         return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
 
+class Tetahedron(IsoSurface):
+    def __init__(self):
+        print('init')
+
+    def isovalue(self):
+        return 2.2
+
+    def test_point(self, point):
+        z = point
+        scale = 1
+        a1 = mathutils.Vector((1, 1, 1))
+        a2 = mathutils.Vector((-1, -1, 1))
+        a3 = mathutils.Vector((1, -1, -1))
+        a4 = mathutils.Vector((-1, 1, -1))
+        n = 0
+        while n < 5:
+            c = a1
+            dist = (z-a1).length
+            d = (z-a2).length
+            if d < dist:
+                c = a2
+                dist = d
+            d = (z-a3).length
+            if d < dist:
+                c = a3
+                dist = d
+            d = (z-a4).length
+            if d < dist:
+                c = a4
+                dist = d
+            z = (scale * z) - (c * (scale - 1.0))
+            n = n+1
+
+        res = z.length * math.pow(scale, -n + 0.)
+        return res
+
+    def material(self):
+        return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
+
+class Sphere(IsoSurface):
+    def __init__(self):
+        print('init')
+
+    def isovalue(self):
+        return 0.
+
+    def test_point(self, point):
+        return math.fabs(math.sqrt(point.x * point.x + point.y * point.y + point.z * point.z) - 0.8)
+
+    def material(self):
+        return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
 
 class IsoSurfaceGenerator:
-    def __init__(self, isosurface=Moebius(), grid_size=3, step_size=0.1):
+    def __init__(self, isosurface=Tetahedron(), grid_size=3, step_size=0.04):
         self.__isosurface = isosurface
         self.__grid_size = grid_size
         self.__step_size = step_size
