@@ -62,4 +62,5 @@ __Shader and noise based map__
 ### Contributors
 
 [Nicolas Lepy](https://github.com/nicolasLepy)
+
 [Cyprien Plateau--Holleville](https://github.com/PlathC)
