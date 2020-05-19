@@ -273,7 +273,7 @@ class Moebius(IsoSurface):
 
 class Mandelbox(IsoSurface):
     def __init__(self):
-        print('init');
+        print('init')
 
     def isovalue(self):
         return 1.
@@ -291,17 +291,17 @@ class Mandelbox(IsoSurface):
             minRadius = 0.5
             mR2 = minRadius * minRadius
 
-            if(x > 1.0):
+            if x > 1.0:
                 x = 2.0 - x
             elif x < -1.0:
                 x = -2.0 - x
-            if(y > 1.0):
+            if y > 1.0:
                 y = 2.0 - y
-            elif(y < -1.0):
+            elif y < -1.0:
                 y = -2.0 - y
-            if(z > 1.0):
+            if z > 1.0:
                 z = 2.0 - z
-            elif(z < - 1.0):
+            elif z < - 1.0:
                 z = -2.0 - z
 
             r2 = x*x + y*y + z*z

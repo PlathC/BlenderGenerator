@@ -46,6 +46,12 @@ Menger Sponge :
 
 ![MengerSponge](output/Resized/MengerSponge.png) 
 
+Mandelbox grid_size=2, step_size=0.005, iterations=6, seed=[2, -2, -2]
+
+![Mandelbox](output/Resized/Mandelbox.png) 
+
+![Mandelbox](output/Resized/Mandelbox1.png) 
+
 ### Terrain 
 
 A terrain generator has been implemented based on different technologies:
