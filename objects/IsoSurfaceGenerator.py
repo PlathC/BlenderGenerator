@@ -271,20 +271,76 @@ class Moebius(IsoSurface):
     def material(self):
         return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
 
-class Tetahedron(IsoSurface):
+class Mandelbox(IsoSurface):
     def __init__(self):
-        print('init')
+        print('init');
 
     def isovalue(self):
-        return 2.2
+        return 1.
+
+    def test_point(self, point):
+        x = point.x
+        y = point.y
+        z = point.z
+        n = 6
+        scale = 2.5
+        for i in range(0, n):
+            DEfactor = scale
+            fixedRadius = 1.0
+            fR2 = fixedRadius * fixedRadius
+            minRadius = 0.5
+            mR2 = minRadius * minRadius
+
+            if(x > 1.0):
+                x = 2.0 - x
+            elif x < -1.0:
+                x = -2.0 - x
+            if(y > 1.0):
+                y = 2.0 - y
+            elif(y < -1.0):
+                y = -2.0 - y
+            if(z > 1.0):
+                z = 2.0 - z
+            elif(z < - 1.0):
+                z = -2.0 - z
+
+            r2 = x*x + y*y + z*z
+
+            if(r2 < mR2):
+                x = x * fR2 / mR2
+                y = y * fR2 / mR2
+                z = z * fR2 / mR2
+                DEfactor = DEfactor * fR2 / mR2
+            elif(r2 < fR2):
+                x = x * fR2 / r2
+                y = y * fR2 / r2
+                z = z * fR2 / r2
+                DEfactor = DEfactor * fR2/r2
+            x = x * scale + 2
+            y = y * scale + -2
+            z = z * scale + -2
+            DEfactor = DEfactor * scale
+
+        distance = math.sqrt(x*x+y*y+z*z)/math.fabs(DEfactor)
+        return distance
+
+    def material(self):
+        return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
+
+class Tetahedron(IsoSurface):
+    def __init__(self, scale=1.):
+        self.__scale = scale
+
+    def isovalue(self):
+        return 1.65
 
     def test_point(self, point):
         z = point
-        scale = 1
-        a1 = mathutils.Vector((1, 1, 1))
-        a2 = mathutils.Vector((-1, -1, 1))
-        a3 = mathutils.Vector((1, -1, -1))
-        a4 = mathutils.Vector((-1, 1, -1))
+        scale = self.__scale
+        a1 = mathutils.Vector((1., 1., 1.))
+        a2 = mathutils.Vector((-1., -1., 1.))
+        a3 = mathutils.Vector((1., -1., -1.))
+        a4 = mathutils.Vector((-1., 1., -1.))
         n = 0
         while n < 5:
             c = a1
@@ -323,8 +379,9 @@ class Sphere(IsoSurface):
     def material(self):
         return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
 
+
 class IsoSurfaceGenerator:
-    def __init__(self, isosurface=Tetahedron(), grid_size=3, step_size=0.04):
+    def __init__(self, isosurface=Mandelbox(), grid_size=3, step_size=0.01):
         self.__isosurface = isosurface
         self.__grid_size = grid_size
         self.__step_size = step_size
