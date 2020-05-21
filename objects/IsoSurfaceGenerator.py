@@ -328,11 +328,11 @@ class Mandelbox(IsoSurface):
         return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
 
 class Tetahedron(IsoSurface):
-    def __init__(self, scale=1.):
+    def __init__(self, scale=2.):
         self.__scale = scale
 
     def isovalue(self):
-        return 1.65
+        return 1.
 
     def test_point(self, point):
         z = point
@@ -342,7 +342,7 @@ class Tetahedron(IsoSurface):
         a3 = mathutils.Vector((1., -1., -1.))
         a4 = mathutils.Vector((-1., 1., -1.))
         n = 0
-        while n < 5:
+        while n < 4:
             c = a1
             dist = (z-a1).length
             d = (z-a2).length
@@ -381,7 +381,7 @@ class Sphere(IsoSurface):
 
 
 class IsoSurfaceGenerator:
-    def __init__(self, isosurface=Mandelbox(), grid_size=3, step_size=0.01):
+    def __init__(self, isosurface=Tetahedron(), grid_size=3, step_size=0.005):
         self.__isosurface = isosurface
         self.__grid_size = grid_size
         self.__step_size = step_size
