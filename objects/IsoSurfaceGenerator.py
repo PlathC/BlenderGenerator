@@ -271,6 +271,29 @@ class Moebius(IsoSurface):
     def material(self):
         return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
 
+class Sin(IsoSurface):
+    def __init__(self):
+        print('init')
+
+    def isovalue(self):
+        return 0.
+
+    def test_point(self, point):
+        vec = mathutils.Vector((point.x * 3 + 3, point.y * 3 + 3, point.z * 3 + 3))
+        dot = vec.dot(mathutils.Vector((1., 1., 1.)))
+        pow = dot*dot
+        int = 0.1 - pow
+        length = point.length - 1.7
+        if(length < 0):
+            length = 0
+        length = length*length * 10.
+        return int - length
+
+        #return math.sin(point.x) + math.sin(point.y) + math.sin(point.z)
+
+    def material(self):
+        return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
+
 class Mandelbox(IsoSurface):
     def __init__(self):
         print('init')
@@ -327,6 +350,8 @@ class Mandelbox(IsoSurface):
     def material(self):
         return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
 
+
+
 class Tetahedron(IsoSurface):
     def __init__(self, scale=2.):
         self.__scale = scale
@@ -362,6 +387,62 @@ class Tetahedron(IsoSurface):
 
         res = z.length * math.pow(scale, -n + 0.)
         return res
+        #Alt method (using symetries) results with a large scale are weird
+        '''
+        z = point
+        r = 0
+        n = 0
+        while n < 4:
+            if z.x + z.y < 0:
+                z.x = -z.y
+                z.y = -z.x
+            if z.x + z.z < 0:
+                z.x = -z.z
+                z.z = -z.x
+            if z.y + z.z < 0:
+                z.z = -z.y
+                z.y = -z.z
+            z = z * 2.0 - mathutils.Vector((1., 1., 1.))*(2.0-1.0)
+            n = n+1
+        return z.length * math.pow(2.0, -n)
+        '''
+
+
+    def material(self):
+        return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
+
+#square a quaterion
+def qsqr(a):
+    return mathutils.Vector(( a.x*a.x - a.y*a.y - a.z*a.z - a.w*a.w,
+                 2.0*a.x*a.y,
+                 2.0*a.x*a.z,
+                 2.0*a.x*a.w))
+
+class Julia(IsoSurface):
+    def __init__(self):
+        print('init')
+
+    def isovalue(self):
+        return 1.
+
+    def test_point(self, point):
+        z = mathutils.Vector((point.x, point.y, point.z, 0.0))
+        md2 = 1.0
+        mz2 = z.dot(z)
+        trap = mathutils.Vector((math.fabs(point.x), math.fabs(point.y), math.fabs(point.z), z.dot(z)))
+        n = 1.0
+        for i in range(0, 4):
+            md2 = md2 * mz2
+            c = mathutils.Vector((0.10, 0.40, 0.40, 0.40))
+            z = qsqr(z) + c
+            if trap > mathutils.Vector((math.fabs(point.x), math.fabs(point.y), math.fabs(point.z),z.dot(z))):
+                trap = mathutils.Vector((math.fabs(point.x), math.fabs(point.y), math.fabs(point.z),z.dot(z)))
+            mz2 = z.dot(z)
+            if mz2>4.0:
+                break
+            n = n+1
+
+        return 0.25 * math.sqrt(mz2/md2)*math.pow(2, -n)*math.log(mz2)
 
     def material(self):
         return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
@@ -381,7 +462,7 @@ class Sphere(IsoSurface):
 
 
 class IsoSurfaceGenerator:
-    def __init__(self, isosurface=Tetahedron(), grid_size=3, step_size=0.005):
+    def __init__(self, isosurface=Sin(), grid_size=3, step_size=0.02):
         self.__isosurface = isosurface
         self.__grid_size = grid_size
         self.__step_size = step_size
