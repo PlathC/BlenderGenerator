@@ -14,10 +14,13 @@ This is a learning project which aims to create procedural mesh that will be ren
 
 ### Procedural meshes
 
-This project allows to create a torus mesh based on its formula and to render it 
-thanks to Blender :
+This project allows to create some procedural meshes:
 
 ![Torus](output/Resized/TorusPP1.png)
+
+Tetahedron
+
+![Tetahedron](output/Resized/Tetahedron.png) 
 
 ### Marching cubes
 
@@ -28,7 +31,7 @@ __Results__:
 
 Here are some outputs of Mandelbulb:
 
-![Mandelbulb](output/Resized/Mandelbrot.png) ![Mandelbulb](output/Resized/Mandelbrot1.png) ![Mandelbulb](output/Resized/Mandelbrot2.png)
+![Mandelbulb](output/Resized/Mandelbrot.png) ![Mandelbulb](output/Resized/Mandelbrot2.png)
 
 ![Mandelbulb](output/Resized/Mandelbrot3.png) ![Mandelbulb](output/Resized/Mandelbulb4.png) 
 
@@ -63,7 +66,6 @@ __Marching cubes and noise__
 __Shader and noise based map__
 
 ![NoiseTerrain](output/Resized/Map.png)
-
 
 ### Contributors
 
