@@ -31,4 +31,7 @@ def reload_modules_main():
 
 def main():
     reload_modules_main()
-    scenes.tetahedron.tetahedron()
+    scenes.tetahedron.fractal_tetrahedron()
+
+
+
