@@ -6,6 +6,12 @@ import objects.Materials
 
 
 def generate_iteration(objects, scale):
+    """
+    Generate an iteration of the tetrahedron
+    :param objects: all pyramids of the last generation
+    :param scale: scale of the pyramids
+    :return: a new list of pyramids composing the tetrahedron
+    """
     new_objects = []
 
     for tetrahedron in objects:
@@ -20,17 +26,27 @@ def generate_iteration(objects, scale):
     return new_objects
 
 
-def fractal_tetrahedron():
+def fractal_tetrahedron(iterations):
+    """
+    Generate the tetrahedron
+    :param iterations: iterations of the tetrahedron
+    """
+
+    # Create the scene
+
     scene = bpy.context.scene
 
     scale = 4
-    initial_tetrahedron = Tetrahedron3(scale)
+    initial_tetrahedron = Tetrahedron(scale)
 
+    # Create the initial tetrahedron : a big pyramid
     initial_tetrahedron.set_vertices(initial_tetrahedron.calculate_vertices())
 
     objects = [initial_tetrahedron]
 
-    for i in range(0, 5):
+    # Iterations of the tetrahedron
+
+    for i in range(0, iterations):
         objects = generate_iteration(objects, scale)
 
     # Get all vertices of every tetrahedron cells
@@ -74,7 +90,8 @@ def fractal_tetrahedron():
 
     # make the bmesh the object's mesh
     bm.to_mesh(mesh)
-    bm.free()  # always do this when finished
+    bm.free()
+    
     objects.Materials.SmoothColor((0., 0., 0., 0.)).apply_material(obj)
     bpy.data.objects['Camera'].location = [0, 0, 10]
     utils.BlenderUtils.update_camera(bpy.data.objects['Camera'],

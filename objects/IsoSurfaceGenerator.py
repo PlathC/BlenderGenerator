@@ -353,66 +353,6 @@ class Mandelbox(IsoSurface):
         return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
 
 
-class Tetahedron(IsoSurface):
-    def __init__(self, scale=2.):
-        self.__scale = scale
-
-    def isovalue(self):
-        return 1.
-
-    def test_point(self, point):
-        z = point
-        scale = self.__scale
-        a1 = mathutils.Vector((1., 1., 1.))
-        a2 = mathutils.Vector((-1., -1., 1.))
-        a3 = mathutils.Vector((1., -1., -1.))
-        a4 = mathutils.Vector((-1., 1., -1.))
-        n = 0
-        while n < 4:
-            c = a1
-            dist = (z-a1.xyz).length
-            d = (z-a2.xyz).length
-            if d < dist:
-                c = a2
-                dist = d
-            d = (z-a3.xyz).length
-            if d < dist:
-                c = a3
-                dist = d
-            d = (z-a4.xyz).length
-            if d < dist:
-                c = a4
-                dist = d
-            z = (scale * z) - (c.xyz * (scale - 1.0))
-            n = n+1
-
-        res = z.length * math.pow(scale, -n + 0.)
-        return res
-        #Alt method (using symetries) results with a large scale are weird
-        '''
-        z = point
-        r = 0
-        n = 0
-        while n < 4:
-            if z.x + z.y < 0:
-                z.x = -z.y
-                z.y = -z.x
-            if z.x + z.z < 0:
-                z.x = -z.z
-                z.z = -z.x
-            if z.y + z.z < 0:
-                z.z = -z.y
-                z.y = -z.z
-            z = z * 2.0 - mathutils.Vector((1., 1., 1.))*(2.0-1.0)
-            n = n+1
-        return z.length * math.pow(2.0, -n)
-        '''
-
-
-    def material(self):
-        return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
-
-
 class Julia(IsoSurface):
     def __init__(self):
         print('init')

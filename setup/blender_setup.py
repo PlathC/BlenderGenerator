@@ -1,3 +1,7 @@
+"""
+Execution script in the Blender terminal
+"""
+
 import runpy
 import bpy
 import sys, os

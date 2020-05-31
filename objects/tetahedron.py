@@ -7,7 +7,7 @@ import bpy
 import bmesh
 
 
-class Tetrahedron3:
+class Tetrahedron:
 
     def __init__(self, scale):
         self.__location = (0.0, 0.0, 0.0)
