@@ -405,7 +405,7 @@ class Sphere(IsoSurface):
 
 
 class IsoSurfaceGenerator:
-    def __init__(self, isosurface=Tetahedron(), grid_size=4, step_size=0.01):
+    def __init__(self, isosurface=Julia(), grid_size=4, step_size=0.01):
         self.__isosurface = isosurface
         self.__grid_size = grid_size
         self.__step_size = step_size

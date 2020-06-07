@@ -1,7 +1,7 @@
 import bpy
 import bmesh
 import utils.BlenderUtils
-from objects.tetahedron import Tetrahedron3
+from objects.tetahedron import Tetrahedron
 import objects.Materials
 
 
