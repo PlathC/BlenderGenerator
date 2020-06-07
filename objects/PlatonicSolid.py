@@ -288,7 +288,7 @@ class PlatonicSolid:
         x_rectangle.append(self.bm.verts.new((0, -iphi, -ephi)))
         x_rectangle.append(self.bm.verts.new((0, -iphi, ephi)))
         x_rectangle.append(self.bm.verts.new((0, iphi, ephi)))
-        x_rectangle.append(self.bm.verts.new((5, iphi, -ephi)))
+        x_rectangle.append(self.bm.verts.new((0, iphi, -ephi)))
 
         y_rectangle = []
         y_rectangle.append(self.bm.verts.new((-ephi, 0, -iphi)))
@@ -303,7 +303,7 @@ class PlatonicSolid:
         z_rectangle.append(self.bm.verts.new((-iphi, ephi, 0)))
 
 
-
+        """
         self.bm.faces.new((x_rectangle[0], x_rectangle[1], x_rectangle[2]))
         self.bm.faces.new((x_rectangle[2], x_rectangle[3], x_rectangle[0]))
         self.bm.faces.new((y_rectangle[0], y_rectangle[1], y_rectangle[2]))
@@ -311,8 +311,43 @@ class PlatonicSolid:
         self.bm.faces.new((z_rectangle[0], z_rectangle[1], z_rectangle[2]))
         self.bm.faces.new((z_rectangle[2], z_rectangle[3], z_rectangle[0]))
 
-        self.bm.faces.new((x_rectangle[0], x_rectangle[1], y_rectangle[2]))
-        self.bm.faces.new((x_rectangle[0], y_rectangle[2], z_rectangle[1]))
+        self.bm.faces.new((x_rectangle[1], x_rectangle[2], y_rectangle[2]))
+        self.bm.faces.new((x_rectangle[1], y_rectangle[2], z_rectangle[1]))
+        self.bm.faces.new((x_rectangle[1], z_rectangle[0], z_rectangle[1]))
+        self.bm.faces.new((x_rectangle[1], z_rectangle[0], y_rectangle[3]))
+        self.bm.faces.new((x_rectangle[1], x_rectangle[2], y_rectangle[3]))
+
+        self.bm.faces.new((y_rectangle[2], y_rectangle[1], z_rectangle[1]))
+        self.bm.faces.new((y_rectangle[2], x_rectangle[2], z_rectangle[2]))
+        """
+
+        """
+        x = []
+        x.append(self.bm.verts.new((0, 1, -phi)))
+        x.append(self.bm.verts.new((0, 1, phi)))
+        x.append(self.bm.verts.new((0, -1, -phi)))
+        x.append(self.bm.verts.new((0, -1, phi)))
+
+        y = []
+        y.append(self.bm.verts.new((-phi, 0, 1)))
+        y.append(self.bm.verts.new((phi, 0, 1)))
+        y.append(self.bm.verts.new((-phi, 0, -1)))
+        y.append(self.bm.verts.new((phi, 0, -1)))
+
+
+        z = []
+        z.append(self.bm.verts.new((1, phi, 0)))
+        z.append(self.bm.verts.new((1, -phi, 0)))
+        z.append(self.bm.verts.new((-1, phi, 0)))
+        z.append(self.bm.verts.new((-1, -phi, 0)))
+
+        self.bm.faces.new((x[0], x[1], x[2]))
+        self.bm.faces.new((x[2], x[3], x[0]))
+        self.bm.faces.new((y[0], y[1], y[2]))
+        self.bm.faces.new((y[2], y[3], y[0]))
+        self.bm.faces.new((z[0], z[1], z[2]))
+        self.bm.faces.new((z[2], z[3], z[0]))
+        """
 
         """
         r = self.radius / 2
@@ -350,7 +385,6 @@ class PlatonicSolid:
     def __init__(self, radius, type):
         self.__location = (0.0, 0.0, 0.0)
         self.radius = radius
-        """
         if type == Shape.TETRAHEDRON:
             self.tetrahedron()
         elif type == Shape.HEXAHEDRON:
@@ -361,9 +395,6 @@ class PlatonicSolid:
             self.dodecahedron()
         elif type == Shape.ICOSAHEDRON:
             self.icosahedron()
-        """
-
-        self.icosahedron()
 
         self.bm = None
         self.mesh = None
