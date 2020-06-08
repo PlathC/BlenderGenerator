@@ -8,6 +8,7 @@ import bmesh
 
 from enum import Enum
 
+
 class Shape(Enum):
     TETRAHEDRON = 1
     HEXAHEDRON = 2
@@ -34,8 +35,6 @@ class PlatonicSolid:
 
         if hasattr(self.bm.verts, "ensure_lookup_table"):
             self.bm.verts.ensure_lookup_table()
-
-
 
     def finish_object(self):
         # Recalculate normal.
@@ -234,26 +233,30 @@ class PlatonicSolid:
         cube_top.append(self.bm.verts.new((r1, r1, r1)))
         cube_top.append(self.bm.verts.new((-r1, r1, r1)))
 
-        # Create three golden rectangle that contain the 12 other vertices
+        # Create three rectangles that contain the 12 other vertices
+
+        # One perpendicular to x-axis of coordinates (0, +- 1/phi, +- phi)
         x_rect = []
         x_rect.append(self.bm.verts.new((0, -iphi1, -phi1)))
         x_rect.append(self.bm.verts.new((0, -iphi1, phi1)))
         x_rect.append(self.bm.verts.new((0, iphi1, phi1)))
         x_rect.append(self.bm.verts.new((0, iphi1, -phi1)))
 
+        # One perpendicular to y-axis of coordinates (+- phi, +- 1/phi, 0)
         z_rect = []
         z_rect.append(self.bm.verts.new((-iphi1, -phi1, 0)))
         z_rect.append(self.bm.verts.new((iphi1, -phi1, 0)))
         z_rect.append(self.bm.verts.new((iphi1, phi1, 0)))
         z_rect.append(self.bm.verts.new((-iphi1, phi1, 0)))
 
+        # One perpendicular to y-axis of coordinates (+- 1/phi, 0, +- phi)
         y_rect = []
         y_rect.append(self.bm.verts.new((-phi1, 0, -iphi1)))
         y_rect.append(self.bm.verts.new((phi1, 0, -iphi1)))
         y_rect.append(self.bm.verts.new((phi1, 0, iphi1)))
         y_rect.append(self.bm.verts.new((-phi1, 0, iphi1)))
 
-        # Create the 12 pentagones of the dodecahedron from golden rectangles and box
+        # Create the 12 pentagons of the dodecahedron from golden rectangles and box
         self.make_penta_mesh(cube_top[0], x_rect[1], cube_top[1], z_rect[1], z_rect[0])
         self.make_penta_mesh(cube_top[2], x_rect[2], cube_top[3], z_rect[3], z_rect[2])
 

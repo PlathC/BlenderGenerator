@@ -17,7 +17,7 @@ class Tetrahedron:
     # Define the four points of the triangle
     def calculate_vertices(self):
         """
-        calculate vertices of the tetrahedron cell
+        Calculate vertices of the tetrahedron cell
         Coordinates of a single tetrahedron cell are multiplied by scale
         """
         scale = self.__scale
@@ -31,7 +31,7 @@ class Tetrahedron:
 
     def get_midpoints(self):
         """
-        get midpoints of the current tetradehron cell
+        Get midpoints of the current tetradehron cell
         """
 
         midpoints = []

@@ -16,12 +16,12 @@ def generate_iteration(objects, scale):
 
     for tetrahedron in objects:
         for point in tetrahedron.get_midpoints():
-            temp = Tetrahedron3(scale)
-            temp.set_scale(tetrahedron.get_scale() / 2)
+            temp = Tetrahedron(scale)
+            temp.set_scale(tetrahedron.get_scale() / 2)  # divide the scale by 2
             temp.set_location(point)
-            temp.set_vertices(temp.calculate_vertices())
+            temp.set_vertices(temp.calculate_vertices())  # calculate the vertices location of the tetrahedron
 
-            new_objects.append(temp)
+            new_objects.append(temp)  # add thr tetrahedron to the list of the generation
 
     return new_objects
 
@@ -33,7 +33,6 @@ def fractal_tetrahedron(iterations):
     """
 
     # Create the scene
-
     scene = bpy.context.scene
 
     scale = 4
