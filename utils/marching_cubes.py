@@ -1,6 +1,7 @@
 import mathutils
 import math
 
+# Edge table for marching cubes
 edge_table = [
     0x0  , 0x109, 0x203, 0x30a, 0x406, 0x50f, 0x605, 0x70c,
     0x80c, 0x905, 0xa0f, 0xb06, 0xc0a, 0xd03, 0xe09, 0xf00,
@@ -35,6 +36,7 @@ edge_table = [
     0xf00, 0xe09, 0xd03, 0xc0a, 0xb06, 0xa0f, 0x905, 0x80c,
     0x70c, 0x605, 0x50f, 0x406, 0x30a, 0x203, 0x109, 0x0]
 
+# Triangles table for marching cubes
 tri_table = [
     [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
     [0, 8, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
@@ -296,6 +298,9 @@ tri_table = [
 
 
 class GridCell:
+    """
+    Describe a cell of the marching cubes grid
+    """
     def __init__(self, vertices, values):
         """
         :param vertices:
@@ -306,7 +311,15 @@ class GridCell:
 
 
 def simple_vertex_interpolation(isolevel, p1, p2, valp1, valp2):
-    mu = 0.
+    """
+    Interpolate the value between two points based on their distance with the isosurface
+    :param isolevel: The isovalue
+    :param p1: Point number 1
+    :param p2: Point number 2
+    :param valp1: p1 distance with the isosurface
+    :param valp2: p2 distance with the isosurface
+    :return: The new interpolated point
+    """
     p = mathutils.Vector((0, 0, 0))
 
     if math.isclose(isolevel - valp1, 0.00001, rel_tol=0.00001, abs_tol=0.00001):
@@ -326,6 +339,12 @@ def simple_vertex_interpolation(isolevel, p1, p2, valp1, valp2):
     return p
 
 def point_is_greater_than(p1, p2):
+    """
+    Compute the greater point
+    :param p1:
+    :param p2:
+    :return: True if P2 > P1, False otherwise
+    """
     if p1.x < p2.x:
         return True
     elif p1.x > p2.x:
@@ -345,6 +364,16 @@ def point_is_greater_than(p1, p2):
 
 
 def linear_vertex_interpolation(isolevel, p1, p2, valp1, valp2):
+    """
+    Interpolate the value between two points based on their distance with the isosurface by linear
+    interpolation
+    :param isolevel: The isovalue
+    :param p1: Point number 1
+    :param p2: Point number 2
+    :param valp1: p1 distance with the isosurface
+    :param valp2: p2 distance with the isosurface
+    :return: The new interpolated point
+    """
     if point_is_greater_than(p2, p1):
         temp = p1
         temp_value = valp1
@@ -365,10 +394,17 @@ def linear_vertex_interpolation(isolevel, p1, p2, valp1, valp2):
 
 # http://paulbourke.net/geometry/polygonise/
 def marching_cubes(grid_cell, iso_level):
-    i = 0
+    """
+    Compute the mesh triangles of the grid_cell based on iso_levels value for each vertices
+    :param grid_cell: The cell's vertices
+    :param iso_level: The isolevel for each vertices
+    :return:
+    """
+
     n_triangle = 0
     vert_list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
+    # Compute edge table index based on iso_level
     cube_index = 0
     if grid_cell.values[0] < iso_level:
         cube_index = cube_index | 1
@@ -387,9 +423,11 @@ def marching_cubes(grid_cell, iso_level):
     if grid_cell.values[7] < iso_level:
         cube_index = cube_index | 128
 
+    # The isosurface is not in the grid_cell
     if edge_table[cube_index] == 0:
         return []
 
+    # Compute vertices
     if edge_table[cube_index] & 1:
         vert_list[0] = linear_vertex_interpolation(iso_level,
                                             grid_cell.vertices[0], grid_cell.vertices[1],
@@ -439,6 +477,7 @@ def marching_cubes(grid_cell, iso_level):
                                              grid_cell.vertices[3], grid_cell.vertices[7],
                                              grid_cell.values[3], grid_cell.values[7])
 
+    # Compute triangles
     triangles = []
     i = 0
     while tri_table[cube_index][i] != -1:

@@ -11,12 +11,23 @@ def clamp(n, smallest, largest):
 
 
 class IsoSurface(ABC):
+    """
+    Describe a basic isosurface
+    """
     @abstractmethod
     def isovalue(self):
+        """
+        Value returned if the point is on the isosurface
+        """
         pass
 
     @abstractmethod
     def test_point(self, point):
+        """
+        Test the point distance of the IsoSurface
+        :param point: Point we want to test
+        :return: Return the distance between the point and the isosurface
+        """
         pass
 
     @abstractmethod
@@ -25,6 +36,9 @@ class IsoSurface(ABC):
 
 
 class Planet(IsoSurface):
+    """
+    Describe an isovalue based on a sphere and a noise map.
+    """
     def __init__(self, radius=1):
         self.__radius = radius
         self.__sphere = Sphere(self.__radius)
@@ -40,27 +54,11 @@ class Planet(IsoSurface):
         return objects.Materials.SmoothColor((1., 1., 1., 1.))
 
 
-class ComplexTerrain(IsoSurface):
-    def isovalue(self):
-        return 0.
-
-    def test_point(self, point):
-        q = mathutils.Vector((mathutils.noise.noise(point.xyz + mathutils.Vector((0, 0, 0))),
-                              mathutils.noise.noise(point.xyz + mathutils.Vector((5.2, 1.3, 0))),
-                              0)
-                             )
-        r = mathutils.Vector((mathutils.noise.noise(point.xyz + 4.0*q.xyz + mathutils.Vector((1.7, 9.2, 0)).xyz),
-                              mathutils.noise.noise(point.xyz + 4.0*q.xyz + mathutils.Vector((8.3, 2.8, 0)).xyz),
-                              0)
-                             )
-
-        return mathutils.noise.noise((point.xyz + 4.0 * r.xyz).xyz) - point.z * 10
-
-    def material(self):
-        return objects.Materials.HeightMapColor()
-
-
 class SimpleNoiseTerrain(IsoSurface):
+    """
+    Describe an isovalue based on a noise map.
+    """
+
     def isovalue(self):
         return 0.
 
@@ -72,6 +70,9 @@ class SimpleNoiseTerrain(IsoSurface):
 
 
 class Heart(IsoSurface):
+    """
+    Describe a isovalue that represents a heart
+    """
     def __init__(self, stretch_factor=8, size=100):
         self.__stretch = stretch_factor * 100
 
@@ -92,7 +93,7 @@ class Heart(IsoSurface):
 # https://strangerintheq.github.io/sdf.html
 class MengerSponge(IsoSurface):
     """
-    To be generated with grid of size 4 and step 0.05
+        Describe a isovalue of the MengerSponge
     """
     def __init__(self, iterations=5):
         self.__iterations = iterations
@@ -113,9 +114,6 @@ class MengerSponge(IsoSurface):
         # https://www.shadertoy.com/view/MdfBWr
         main_width_box = 2.
         inf = 1.
-        hole_x = 0.
-        hole_y = 0.
-        hole_z = 0.
         hole_width_b = main_width_box / 3.0
 
         menger = self.__test_point_box(point, mathutils.Vector((main_width_box, main_width_box, main_width_box)))
@@ -152,8 +150,11 @@ class MengerSponge(IsoSurface):
         return objects.Materials.SmoothColor(color=(0.1, 0.1, 0.1, 0.))
 
 
-# https://www.fountainware.com/Funware/Mandelbrot3D/Mandelbrot3d.htm
 class Mandelbulb(IsoSurface):
+    """
+    Based on https://www.fountainware.com/Funware/Mandelbrot3D/Mandelbrot3d.htm
+    Isovalue of a Mandelbulb
+    """
     def __init__(self, max_iterations=5, degree=3):
         self.__max_iterations = max_iterations
         self.__degree = degree
@@ -162,9 +163,6 @@ class Mandelbulb(IsoSurface):
         return 1.
 
     def test_point(self, point):
-        """
-        :param point: The point we want to test
-        """
         c = point
         result = 0
         for ite in range(0, self.__max_iterations):
@@ -190,6 +188,9 @@ class Mandelbulb(IsoSurface):
 
 
 class Sphere(IsoSurface):
+    """
+    Describe an isovalue of a sphere
+    """
     def __init__(self, radius=1):
         self.__radius = radius
 
@@ -204,6 +205,9 @@ class Sphere(IsoSurface):
 
 
 class Torus(IsoSurface):
+    """
+    Describe an isovalue of a Torus
+    """
     def __init__(self, fradius=2, sradius=1):
         self.__fradius = fradius
         self.__sradius = sradius
@@ -227,6 +231,9 @@ class Torus(IsoSurface):
 
 
 class Genus2(IsoSurface):
+    """
+    Describe an isovalue of Genus2 surface
+    """
     def isovalue(self):
         return 0.
 
@@ -241,6 +248,9 @@ class Genus2(IsoSurface):
 
 
 class RevolutionSurface(IsoSurface):
+    """
+    Describe an isovalue of a revolution surface
+    """
     def __init__(self, height=2.2, radius=3.02):
         self.__height = height
         self.__radius = radius
@@ -257,6 +267,9 @@ class RevolutionSurface(IsoSurface):
 
 
 class Moebius(IsoSurface):
+    """
+    Describe an isovalue of a Moebius surface
+    """
     def __init__(self, curve=0.8):
         self.__curve = curve
 
@@ -272,33 +285,12 @@ class Moebius(IsoSurface):
         return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
 
 
-class Sin(IsoSurface):
-    def __init__(self):
-        print('init')
-
-    def isovalue(self):
-        return 0.
-
-    def test_point(self, point):
-        vec = mathutils.Vector((point.x * 3 + 3, point.y * 3 + 3, point.z * 3 + 3))
-        dot = vec.dot(mathutils.Vector((1., 1., 1.)))
-        dotPow = dot.xyz * dot.xyz
-        subtDotPow = 0.1 - dotPow
-        lengthPoint = point.length - 1.7
-        if lengthPoint < 0:
-            lengthPoint = 0
-        lengthPoint = lengthPoint * lengthPoint * 10.
-        return subtDotPow - lengthPoint
-
-        #return math.sin(point.x) + math.sin(point.y) + math.sin(point.z)
-
-    def material(self):
-        return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
-
-
 class Mandelbox(IsoSurface):
-    def __init__(self):
-        print('init')
+    """
+    Mandelbox Isosurface
+    """
+    def __init__(self, scale = 2.5):
+        self.__scale = scale
 
     def isovalue(self):
         return 1.
@@ -308,9 +300,8 @@ class Mandelbox(IsoSurface):
         y = point.y
         z = point.z
         n = 6
-        scale = 2.5
         for i in range(0, n):
-            de_factor = scale
+            de_factor = self.__scale
             fixedRadius = 1.0
             fR2 = fixedRadius * fixedRadius
             minRadius = 0.5
@@ -341,10 +332,10 @@ class Mandelbox(IsoSurface):
                 y = y * fR2 / r2
                 z = z * fR2 / r2
                 de_factor = de_factor * fR2/r2
-            x = x * scale + 2
-            y = y * scale + -2
-            z = z * scale + -2
-            de_factor = de_factor * scale
+            x = x * self.__scale + 2
+            y = y * self.__scale + -2
+            z = z * self.__scale + -2
+            de_factor = de_factor * self.__scale
 
         distance = math.sqrt(x * x + y * y + z * z) / math.fabs(de_factor)
         return distance
@@ -354,14 +345,18 @@ class Mandelbox(IsoSurface):
 
 
 class Julia(IsoSurface):
-    def __init__(self):
-        print('init')
-
+    """
+    Julia isosurface
+    """
     def isovalue(self):
         return 1.
 
-    # square a quaterion
     def qsqr(self, a):
+        """
+        square a quaterion
+        :param a: The quaternion to square
+        :return: The square of a
+        """
         return mathutils.Vector((a.x * a.x - a.y * a.y - a.z * a.z - a.w * a.w,
                                  2.0 * a.x * a.y,
                                  2.0 * a.x * a.z,
@@ -390,22 +385,18 @@ class Julia(IsoSurface):
         return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
 
 
-class Sphere(IsoSurface):
-    def __init__(self):
-        print('init')
-
-    def isovalue(self):
-        return 0.
-
-    def test_point(self, point):
-        return math.fabs(math.sqrt(point.x * point.x + point.y * point.y + point.z * point.z) - 0.8)
-
-    def material(self):
-        return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
-
 
 class IsoSurfaceGenerator:
+    """
+    Class which aims to create an isosurface mesh based on a isofunction and the Marching cubes algorithm
+    """
     def __init__(self, isosurface=Julia(), grid_size=4, step_size=0.01):
+        """
+
+        :param isosurface: The isosurface type
+        :param grid_size: The drid_size of the marching cubes
+        :param step_size: The step size in the grid of the marching cubes
+        """
         self.__isosurface = isosurface
         self.__grid_size = grid_size
         self.__step_size = step_size
@@ -414,13 +405,21 @@ class IsoSurfaceGenerator:
         self.__faces = []
 
     def generate_mesh(self):
+        """
+        Build mesh using marching cubes
+        """
+
+        # Compute grid bounds
         low = -(self.__grid_size / 2) - self.__step_size
         up = (self.__grid_size / 2) + self.__step_size
         self.__faces = []
 
+        # Grid building
         for i in numpy.arange(low, up, self.__step_size):
             for j in numpy.arange(low, up, self.__step_size):
                 for k in numpy.arange(low, up, self.__step_size):
+
+                    # Compute cube's vertices
                     vertices = [
                         mathutils.Vector((i, j, k + self.__step_size)),
                         mathutils.Vector((i + self.__step_size, j, k + self.__step_size)),
