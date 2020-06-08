@@ -75,8 +75,7 @@ class PlatonicSolid:
         """
         self.create_object()
 
-        r = self.radius
-        edge_length = math.sqrt(2) * r
+        edge_length = math.sqrt(2) * self.radius
 
         # the base of the octahedron is a square, so it will be composed of 4 vertices
         # the angle step between these four vertices will be 2pi / 4 = pi/2
@@ -85,13 +84,13 @@ class PlatonicSolid:
         # Create the base of the object
         base = []
         for i in range(0, 4):
-            x = r * math.cos(angle_step * i)
-            y = r * math.sin(angle_step * i)
+            x = self.radius * math.cos(angle_step * i)
+            y = self.radius * math.sin(angle_step * i)
             base.append(self.bm.verts.new((x, y, 0)))
 
         # Create the peaks
-        top = self.bm.verts.new((0, 0, r))
-        bottom = self.bm.verts.new((0, 0, -r))
+        top = self.bm.verts.new((0, 0, self.radius))
+        bottom = self.bm.verts.new((0, 0, -self.radius))
 
         # Link the four vertices of the base with top peak
         self.bm.faces.new((base[0], base[3], top))
@@ -107,41 +106,13 @@ class PlatonicSolid:
 
         self.finish_object()
 
-    """
-    def octahedron2(self):
-        edgeLength = self.radius * math.sqrt(2)
-
-        # Base
-        vert1 = mathutils.Vector((0., 0., 0.))
-        vert2 = vert1 + mathutils.Vector((edgeLength, 0., 0.))
-        vert3 = vert1 + mathutils.Vector((edgeLength, edgeLength, 0.))
-        vert4 = vert1 + mathutils.Vector((0., edgeLength, 0.))
-
-        vert5 = mathutils.Vector((edgeLength/2, edgeLength/2, math.sqrt(2/3) * edgeLength))
-        vert6 = mathutils.Vector((edgeLength/2, edgeLength/2, -math.sqrt(2/3) * edgeLength))
-        verts = [vert1, vert2, vert3, vert4, vert5, vert6]
-        self.create_object()
-
-        # Base
-        self.bm.faces.new((self.bm.verts[0], self.bm.verts[1], self.bm.verts[2]))
-        self.bm.faces.new((self.bm.verts[2], self.bm.verts[3], self.bm.verts[0]))
-        for i in [4, 5]:
-            self.bm.faces.new((self.bm.verts[0], self.bm.verts[1], self.bm.verts[i]))
-            self.bm.faces.new((self.bm.verts[1], self.bm.verts[2], self.bm.verts[i]))
-            self.bm.faces.new((self.bm.verts[2], self.bm.verts[3], self.bm.verts[i]))
-            self.bm.faces.new((self.bm.verts[3], self.bm.verts[0], self.bm.verts[i]))
-
-        self.finish_object()
-    """
-
     def hexahedron(self):
         """
         Make the hexahedron mesh (the cube)
         """
 
         self.create_object()
-        r = self.radius
-        edge_length = math.sqrt(2) * r  # From radius, we can get edge length
+        edge_length = math.sqrt(2) * self.radius  # From radius, we can get edge length
         half_edge = edge_length / 2
 
         # Create bottom vertices (the 4 corners, with a z value = 0)
@@ -177,19 +148,18 @@ class PlatonicSolid:
 
         self.create_object()
 
-        r = self.radius
         # we want the angle step for the vertices composing the tetrahedron
         # (2 * pi, a full circle, divided by 3 for the three vertices)
         angle = 2 * math.pi / 3
 
         # Determine the peak height
-        h = math.sqrt(2) * r
+        h = math.sqrt(2) * self.radius
 
         # Create the three bottom vertices and every time the angle incremented with the step previously defined
         sides = []
         for i in range(0, 3):
-            x = r * math.cos(i * angle)
-            y = r * math.sin(i * angle)
+            x = self.radius * math.cos(i * angle)
+            y = self.radius * math.sin(i * angle)
             sides.append(self.bm.verts.new((x, y, 0)))
 
         # Create the peak
@@ -210,8 +180,7 @@ class PlatonicSolid:
 
         self.create_object()
 
-        r = self.radius
-        m = 1 / math.sqrt(3) * r
+        m = 1 / math.sqrt(3) * self.radius
         phi = (1 + math.sqrt(5)) / 2  # the golden ratio
 
         r1 = 1 * m
@@ -278,15 +247,19 @@ class PlatonicSolid:
         self.finish_object()
 
     def icosahedron(self):
+        """
+        Make the icosahedron
+        :return:
+        """
         self.create_object()
 
-        r = self.radius
-        m = 1 / math.sqrt(3) * r
+        m = 1 / math.sqrt(3) * self.radius
         phi = (1 + math.sqrt(5)) / 2  # golden ratio
 
         ephi = phi * m
-        iphi = (1.0 / phi) * m
+        iphi = 1.5 * phi
 
+        # Create three rectangles to contain the all vertices using golden ratio
         x_rectangle = []
         x_rectangle.append(self.bm.verts.new((0, -iphi, -ephi)))
         x_rectangle.append(self.bm.verts.new((0, -iphi, ephi)))
@@ -305,14 +278,58 @@ class PlatonicSolid:
         z_rectangle.append(self.bm.verts.new((iphi, ephi, 0)))
         z_rectangle.append(self.bm.verts.new((-iphi, ephi, 0)))
 
-
         """
+        The three rectangles meshes
         self.bm.faces.new((x_rectangle[0], x_rectangle[1], x_rectangle[2]))
         self.bm.faces.new((x_rectangle[2], x_rectangle[3], x_rectangle[0]))
         self.bm.faces.new((y_rectangle[0], y_rectangle[1], y_rectangle[2]))
         self.bm.faces.new((y_rectangle[2], y_rectangle[3], y_rectangle[0]))
         self.bm.faces.new((z_rectangle[0], z_rectangle[1], z_rectangle[2]))
         self.bm.faces.new((z_rectangle[2], z_rectangle[3], z_rectangle[0]))
+        """
+
+        if hasattr(self.bm.verts, "ensure_lookup_table"):
+            self.bm.verts.ensure_lookup_table()
+
+        # Make the 20 faces between the 12 vertices
+
+        x0 = self.bm.verts[0]
+        x1 = self.bm.verts[1]
+        x2 = self.bm.verts[2]
+        x3 = self.bm.verts[3]
+        y0 = self.bm.verts[4]
+        y1 = self.bm.verts[5]
+        y2 = self.bm.verts[6]
+        y3 = self.bm.verts[7]
+        z0 = self.bm.verts[8]
+        z1 = self.bm.verts[9]
+        z2 = self.bm.verts[10]
+        z3 = self.bm.verts[11]
+
+        self.bm.faces.new((x1, y2, z1))
+        self.bm.faces.new((x1, z0, z1))
+        self.bm.faces.new((x1, y3, z0))
+        self.bm.faces.new((y1, y2, z1))
+        self.bm.faces.new((y2, x2, x1))
+
+        self.bm.faces.new((z1, x0, y1))
+        self.bm.faces.new((z0, z1, x0))
+        self.bm.faces.new((y2, z2, x2))
+        self.bm.faces.new((y2, y1, z2))
+        self.bm.faces.new((x1, x2, y3))
+
+        self.bm.faces.new((z3, z2, x2))
+        self.bm.faces.new((x2, y3, z3))
+        self.bm.faces.new((y1, x0, x3))
+        self.bm.faces.new((y1, x3, z2))
+        self.bm.faces.new((z3, z2, x3))
+
+        self.bm.faces.new((y0, y3, z3))
+        self.bm.faces.new((z0, y3, y0))
+        self.bm.faces.new((y0, x0, x3))
+        self.bm.faces.new((x0, y0, z0))
+        self.bm.faces.new((x3, y0, z3))
+        """
 
         self.bm.faces.new((x_rectangle[1], x_rectangle[2], y_rectangle[2]))
         self.bm.faces.new((x_rectangle[1], y_rectangle[2], z_rectangle[1]))
@@ -398,7 +415,6 @@ class PlatonicSolid:
             self.dodecahedron()
         elif type == Shape.ICOSAHEDRON:
             self.icosahedron()
-
         self.bm = None
         self.mesh = None
 
