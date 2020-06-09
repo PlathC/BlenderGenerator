@@ -1,6 +1,8 @@
 import bpy
 import bmesh
-import objects.Materials
+
+# import objects.Materials
+from BlenderGenerator.objects import Materials
 
 
 def Map():
@@ -10,4 +12,4 @@ def Map():
     bpy.ops.mesh.subdivide(number_cuts=100)
     bpy.ops.object.mode_set(mode="OBJECT")
 
-    objects.Materials.NoiseMap().apply_material(obj)
+    Materials.NoiseMap().apply_material(obj)

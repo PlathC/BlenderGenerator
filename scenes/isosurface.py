@@ -1,8 +1,14 @@
 import bpy
 import bmesh
-import utils.BlenderUtils
+
+"""import utils.BlenderUtils
 from objects.IsoSurfaceGenerator import IsoSurfaceGenerator
 from objects.IsoSurfaceGenerator import *
+"""
+
+from BlenderGenerator.utils import BlenderUtils
+from BlenderGenerator.objects.IsoSurfaceGenerator import IsoSurfaceGenerator
+from BlenderGenerator.objects.IsoSurfaceGenerator import *
 
 
 def isosurface(isosurface_object):
@@ -60,7 +66,7 @@ def isosurface(isosurface_object):
     m.material().apply_material(obj)
 
     bpy.data.objects['Camera'].location = [3, 0, 0]
-    utils.BlenderUtils.update_camera(bpy.data.objects['Camera'],
+    BlenderUtils.update_camera(bpy.data.objects['Camera'],
                                      focus_point=obj.location,
                                      distance=5)
     scene.render.resolution_x = 1920

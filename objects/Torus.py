@@ -56,7 +56,7 @@ class Torus:
         fc = self.__fc_diameter * w.xyz
 
         cosv = math.cos(v)
-        sc = self.__sc_diameter * w.xyz
+        sc = self.__sc_diameter * w.xyz * cosv
         ls = mathutils.Vector((0,
                                0,
                                self.__sc_diameter * math.sin(v)))

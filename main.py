@@ -236,7 +236,8 @@ def register():
     """
 
     reload_modules_main()
-    """
+
+    """ 
     importlib.reload(locals()[utils])
     bpy.utils.register_class(utils.BlenderUtils)
     """
@@ -305,7 +306,6 @@ def main():
     Main function of the script
     """
 
-    #scenes.platonicSolid.platonic_solid()
     register()
 
 

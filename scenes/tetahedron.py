@@ -1,8 +1,16 @@
 import bpy
 import bmesh
+
+"""
 import utils.BlenderUtils
 from objects.tetahedron import Tetrahedron
 import objects.Materials
+"""
+
+
+from BlenderGenerator.utils import BlenderUtils
+from BlenderGenerator.objects.tetahedron import Tetrahedron
+from BlenderGenerator.objects import Materials
 
 
 def generate_iteration(objects, scale):
@@ -91,9 +99,9 @@ def fractal_tetrahedron(iterations):
     bm.to_mesh(mesh)
     bm.free()
     
-    objects.Materials.SmoothColor((0., 0., 0., 0.)).apply_material(obj)
+    Materials.SmoothColor((0., 0., 0., 0.)).apply_material(obj)
     bpy.data.objects['Camera'].location = [0, 0, 10]
-    utils.BlenderUtils.update_camera(bpy.data.objects['Camera'],
+    BlenderUtils.update_camera(bpy.data.objects['Camera'],
                                      focus_point=obj.location,
                                      distance=11.53)
 

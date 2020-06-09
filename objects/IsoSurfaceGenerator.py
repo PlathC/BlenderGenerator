@@ -1,9 +1,16 @@
 import mathutils
 import math
-import utils.marching_cubes
+
+
+# import utils.marching_cubes
+from BlenderGenerator.utils import marching_cubes
+
 import numpy
+
 from abc import ABC, abstractmethod
-import objects.Materials
+
+# import objects.Materials
+from BlenderGenerator.objects import Materials
 
 
 def clamp(n, smallest, largest):
@@ -51,7 +58,7 @@ class Planet(IsoSurface):
                mathutils.noise.hybrid_multi_fractal(point.normalized(), 1., 10.0, 12, 1, 50) * (self.__radius/3)
 
     def material(self):
-        return objects.Materials.SmoothColor((1., 1., 1., 1.))
+        return Materials.SmoothColor((1., 1., 1., 1.))
 
 
 class SimpleNoiseTerrain(IsoSurface):
@@ -66,7 +73,7 @@ class SimpleNoiseTerrain(IsoSurface):
         return mathutils.noise.noise(point.xyz, noise_basis='PERLIN_ORIGINAL') - point.z
 
     def material(self):
-        return objects.Materials.HeightMapColor()
+        return Materials.HeightMapColor()
 
 
 class Heart(IsoSurface):
@@ -87,7 +94,7 @@ class Heart(IsoSurface):
         return cube * cube * cube - x * x * z * z * z - (9. * y * y * z * z * z)/200. * self.__stretch
 
     def material(self):
-        return objects.Materials.SmoothColor(color=(1., 0., 0., 0.))
+        return Materials.SmoothColor(color=(1., 0., 0., 0.))
 
 
 # https://strangerintheq.github.io/sdf.html
@@ -184,7 +191,7 @@ class Mandelbulb(IsoSurface):
         return result
 
     def material(self):
-        return objects.Materials.SmoothColor(color=(0.1, 0.1, 0.1, 0.))
+        return Materials.SmoothColor(color=(0.1, 0.1, 0.1, 0.))
 
 
 class Sphere(IsoSurface):
@@ -201,7 +208,7 @@ class Sphere(IsoSurface):
         return point.length_squared - self.__radius
 
     def material(self):
-        return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
+        return Materials.SmoothColor(color=(1., 1., 1., 1.))
 
 
 class Torus(IsoSurface):
@@ -227,7 +234,7 @@ class Torus(IsoSurface):
                (point.x * point.x + point.y * point.y)
 
     def material(self):
-        return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
+        return Materials.SmoothColor(color=(1., 1., 1., 1.))
 
 
 class Genus2(IsoSurface):
@@ -244,7 +251,7 @@ class Genus2(IsoSurface):
                (1 - point.z * point.z)
 
     def material(self):
-        return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
+        return Materials.SmoothColor(color=(1., 1., 1., 1.))
 
 
 class RevolutionSurface(IsoSurface):
@@ -263,7 +270,7 @@ class RevolutionSurface(IsoSurface):
         return point.x * point.x + point.y * point.y - (ln_z * ln_z) - self.__radius
 
     def material(self):
-        return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
+        return Materials.SmoothColor(color=(1., 1., 1., 1.))
 
 
 class Moebius(IsoSurface):
@@ -282,7 +289,7 @@ class Moebius(IsoSurface):
                - self.__curve * point.x * point.x * point.z - self.__curve * point.y * point.y * point.z
 
     def material(self):
-        return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
+        return Materials.SmoothColor(color=(1., 1., 1., 1.))
 
 
 class Mandelbox(IsoSurface):
@@ -341,7 +348,7 @@ class Mandelbox(IsoSurface):
         return distance
 
     def material(self):
-        return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
+        return Materials.SmoothColor(color=(1., 1., 1., 1.))
 
 
 class Julia(IsoSurface):
@@ -382,7 +389,7 @@ class Julia(IsoSurface):
         return 0.25 * math.sqrt( mz2 / md2) * math.pow(2, -n) * math.log(mz2)
 
     def material(self):
-        return objects.Materials.SmoothColor(color=(1., 1., 1., 1.))
+        return Materials.SmoothColor(color=(1., 1., 1., 1.))
 
 
 
@@ -435,8 +442,8 @@ class IsoSurfaceGenerator:
                     for l in range(0, len(vertices)):
                         values.append(self.__isosurface.test_point(vertices[l]))
 
-                    cell = utils.marching_cubes.GridCell(vertices, values)
-                    self.__faces.extend(utils.marching_cubes.marching_cubes(cell, self.__isosurface.isovalue()))
+                    cell = marching_cubes.GridCell(vertices, values)
+                    self.__faces.extend(marching_cubes.marching_cubes(cell, self.__isosurface.isovalue()))
 
         print(f"End of mesh generation found {str(len(self.__faces))} faces")
 

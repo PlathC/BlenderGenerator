@@ -1,9 +1,14 @@
 import bpy
 import bmesh
+"""
 import utils.BlenderUtils
 from objects.Torus import Torus
 import objects.Materials
+"""
 
+from BlenderGenerator.utils import BlenderUtils
+from BlenderGenerator.objects.Torus import Torus
+from BlenderGenerator.objects import Materials
 
 def torus():
     mesh = bpy.data.meshes.new("torus_mesh")  # add a new mesh
@@ -46,9 +51,9 @@ def torus():
     values = [True] * len(mesh.polygons)
     mesh.polygons.foreach_set("use_smooth", values)
 
-    objects.Materials.SmoothColor((0., 0., 0., 0.)).apply_material(obj)
+    Materials.SmoothColor((0., 0., 0., 0.)).apply_material(obj)
     bpy.data.objects['Camera'].location = [0, 0, 10]
-    utils.BlenderUtils.update_camera(bpy.data.objects['Camera'],
+    BlenderUtils.update_camera(bpy.data.objects['Camera'],
                                      focus_point=obj.location,
                                      distance=11.53)
 
