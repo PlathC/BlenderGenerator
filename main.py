@@ -176,7 +176,7 @@ class OBJECT_MT_fractals(bpy.types.Menu):
     """
 
     bl_idname = 'object.fractals'
-    bl_label = 'Fractals'
+    bl_label = 'Marching cube / Fractals'
 
     def draw(self, context):
         layout = self.layout
