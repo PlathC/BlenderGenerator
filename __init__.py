@@ -32,6 +32,20 @@ bl_info = {
     "category": "Add Mesh",
 }
 
+class PARAMS_PT_panel(bpy.types.Panel):
+    bl_label = "Marching cube"
+    bl_category = "Marching cube"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+
+    def draw(self, context):
+        layout = self.layout
+
+        layout.label(text="Marching cube properties")
+        box1 = layout.box()
+        box1.prop(context.scene, "grid_size")
+        box1.prop(context.scene, "step_size")
+
 
 class OBJECT_OT_mandelbox(bpy.types.Operator):
     """
@@ -257,11 +271,21 @@ def register():
     Register components in Blender
     """
 
+
     reload_modules_main()
     """
     importlib.reload(locals()[utils])
     bpy.utils.register_class(utils.BlenderUtils)
     """
+    bpy.types.Scene.step_size = bpy.props.FloatProperty(name="StepSize", precision=4)
+    bpy.types.Scene.grid_size = bpy.props.FloatProperty(name="GridSize")
+
+
+    bpy.utils.register_class(PARAMS_PT_panel)
+
+    # bpy.context.scene.step_size = 0.05
+    # bpy.context.scene.grid_size = 4.
+
     bpy.utils.register_class(add_platonic_solids)
     bpy.utils.register_class(add_tetrahedron)
     bpy.utils.register_class(add_torus)
@@ -286,6 +310,8 @@ def unregister():
     """
     Unregister components from Blender
     """
+
+    bpy.utils.unregister_class(PARAMS_PT_panel)
 
     bpy.utils.unregister_class(add_platonic_solids)
     bpy.utils.unregister_class(add_tetrahedron)
@@ -324,6 +350,20 @@ def reload_modules_main():
     importlib.reload(scenes.Map)
     importlib.reload(scenes.platonicSolid)
 
+    """
+    importlib.reload(BlenderUtils)
+    importlib.reload(marching_cubes)
+    importlib.reload(Torus)
+    importlib.reload(tetahedron)
+    importlib.reload(IsoSurfaceGenerator)
+    importlib.reload(Materials)
+    importlib.reload(PlatonicSolid)
+    importlib.reload(torus)
+    importlib.reload(tetahedron)
+    importlib.reload(isosurface)
+    importlib.reload(Map)
+    importlib.reload(platonicSolid)
+    """
 
 if __name__ == "__main__":
     register()

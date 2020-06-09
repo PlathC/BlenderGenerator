@@ -24,7 +24,7 @@ def isosurface(isosurface_object):
     mesh = bpy.context.object.data
     bm = bmesh.new()
 
-    m = IsoSurfaceGenerator(isosurface_object)
+    m = IsoSurfaceGenerator(isosurface_object, bpy.context.scene.grid_size, bpy.context.scene.step_size)
     m.generate_mesh()
 
     faces = m.faces()
