@@ -390,7 +390,7 @@ class IsoSurfaceGenerator:
     """
     Class which aims to create an isosurface mesh based on a isofunction and the Marching cubes algorithm
     """
-    def __init__(self, isosurface=Julia(), grid_size=4, step_size=0.01):
+    def __init__(self, isosurface=Mandelbox(), grid_size=4, step_size=0.05):
         """
 
         :param isosurface: The isosurface type

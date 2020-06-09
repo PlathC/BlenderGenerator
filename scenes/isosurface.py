@@ -2,9 +2,10 @@ import bpy
 import bmesh
 import utils.BlenderUtils
 from objects.IsoSurfaceGenerator import IsoSurfaceGenerator
+from objects.IsoSurfaceGenerator import *
 
 
-def isosurface():
+def isosurface(isosurface_object):
     mesh = bpy.data.meshes.new("isosurface_mesh")  # add a new mesh
     obj = bpy.data.objects.new("isosurface", mesh)  # add a new object using the mesh
 
@@ -17,7 +18,7 @@ def isosurface():
     mesh = bpy.context.object.data
     bm = bmesh.new()
 
-    m = IsoSurfaceGenerator()
+    m = IsoSurfaceGenerator(isosurface_object)
     m.generate_mesh()
 
     faces = m.faces()

@@ -41,16 +41,16 @@ def fractal_tetrahedron(iterations):
     # Create the initial tetrahedron : a big pyramid
     initial_tetrahedron.set_vertices(initial_tetrahedron.calculate_vertices())
 
-    objects = [initial_tetrahedron]
+    tetrahedrons = [initial_tetrahedron]
 
     # Iterations of the tetrahedron
 
     for i in range(0, iterations):
-        objects = generate_iteration(objects, scale)
+        tetrahedrons = generate_iteration(tetrahedrons, scale)
 
     # Get all vertices of every tetrahedron cells
     vertices = []
-    for obj in objects:
+    for obj in tetrahedrons:
         obj_vertices = obj.get_vertices()
         for vert in obj_vertices:
             vertices.append(vert)
