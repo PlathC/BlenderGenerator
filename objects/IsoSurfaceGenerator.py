@@ -296,8 +296,9 @@ class Mandelbox(IsoSurface):
     """
     Mandelbox Isosurface
     """
-    def __init__(self, scale = 2.5):
+    def __init__(self, scale=2.5, iterations=6):
         self.__scale = scale
+        self.__iterations = iterations
 
     def isovalue(self):
         return 1.
@@ -306,7 +307,7 @@ class Mandelbox(IsoSurface):
         x = point.x
         y = point.y
         z = point.z
-        n = 6
+        n = self.__iterations
         for i in range(0, n):
             de_factor = self.__scale
             fixedRadius = 1.0

@@ -41,10 +41,24 @@ class PARAMS_PT_panel(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
 
-        layout.label(text="Marching cube properties")
         box1 = layout.box()
+        box1.label(text="Marching cube properties")
         box1.prop(context.scene, "grid_size")
         box1.prop(context.scene, "step_size")
+        box2 = layout.box()
+        box2.label(text="Fractals properties")
+        box2.prop(context.scene, "fractals_iteration")
+        box3 = layout.box()
+        box3.label(text="Objects properties")
+        box3.prop(context.scene, "planet_sphere_radius")
+        box3.prop(context.scene, "heart_stretch_fractor")
+        box3.prop(context.scene, "mandelbulb_degree")
+        box3.prop(context.scene, "torus_fradius")
+        box3.prop(context.scene, "torus_sradius")
+        box3.prop(context.scene, "revolution_height")
+        box3.prop(context.scene, "revolution_radius")
+        box3.prop(context.scene, "moebius_curve")
+        box3.prop(context.scene, "mandelbox_scale")
 
 
 class OBJECT_OT_mandelbox(bpy.types.Operator):
@@ -56,8 +70,12 @@ class OBJECT_OT_mandelbox(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        scenes.isosurface.isosurface(Mandelbox())
+        print("ex")
+        print(bpy.types.Scene.mandelbox_scale)
+        print(bpy.types.Scene.fractals_iteration)
+        scenes.isosurface.isosurface(Mandelbox(bpy.context.scene.mandelbox_scale, bpy.context.scene.fractals_iteration))
         return {'FINISHED'}
+
 
 class OBJECT_OT_moebius(bpy.types.Operator):
     """
@@ -69,8 +87,9 @@ class OBJECT_OT_moebius(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        scenes.isosurface.isosurface(Moebius())
+        scenes.isosurface.isosurface(Moebius(bpy.context.scene.moebius_curve))
         return {'FINISHED'}
+
 
 class OBJECT_OT_revolution(bpy.types.Operator):
     """
@@ -82,8 +101,9 @@ class OBJECT_OT_revolution(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        scenes.isosurface.isosurface(RevolutionSurface())
+        scenes.isosurface.isosurface(RevolutionSurface(bpy.context.scene.revolution_height, bpy.context.scene.revolution_radius))
         return {'FINISHED'}
+
 
 class OBJECT_OT_genus(bpy.types.Operator):
     """
@@ -98,6 +118,7 @@ class OBJECT_OT_genus(bpy.types.Operator):
         scenes.isosurface.isosurface(Genus2())
         return {'FINISHED'}
 
+
 class OBJECT_OT_torus(bpy.types.Operator):
     """
     Create torus fractal menu entry
@@ -108,8 +129,9 @@ class OBJECT_OT_torus(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        scenes.isosurface.isosurface(Torus())
+        scenes.isosurface.isosurface(Torus(bpy.context.scene.torus_fradius, bpy.context.scene.torus_sradius))
         return {'FINISHED'}
+
 
 class OBJECT_OT_sphere(bpy.types.Operator):
     """
@@ -121,8 +143,9 @@ class OBJECT_OT_sphere(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        scenes.isosurface.isosurface(Sphere())
+        scenes.isosurface.isosurface(Sphere(bpy.context.scene.planet_sphere_radius))
         return {'FINISHED'}
+
 
 class OBJECT_OT_mandelbulb(bpy.types.Operator):
     """
@@ -134,8 +157,9 @@ class OBJECT_OT_mandelbulb(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        scenes.isosurface.isosurface(Mandelbulb())
+        scenes.isosurface.isosurface(Mandelbulb(bpy.context.scene.fractals_iteration, bpy.context.scene.mandelbulb_degree))
         return {'FINISHED'}
+
 
 class OBJECT_OT_mengersponge(bpy.types.Operator):
     """
@@ -147,8 +171,9 @@ class OBJECT_OT_mengersponge(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        scenes.isosurface.isosurface(MengerSponge())
+        scenes.isosurface.isosurface(MengerSponge(bpy.context.scene.fractals_iteration))
         return {'FINISHED'}
+
 
 class OBJECT_OT_heart(bpy.types.Operator):
     """
@@ -160,7 +185,7 @@ class OBJECT_OT_heart(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        scenes.isosurface.isosurface(Heart())
+        scenes.isosurface.isosurface(Heart(bpy.context.scene.heart_stretch_fractor))
         return {'FINISHED'}
 
 
@@ -177,6 +202,7 @@ class OBJECT_OT_simplenoiseterrain(bpy.types.Operator):
         scenes.isosurface.isosurface(SimpleNoiseTerrain())
         return {'FINISHED'}
 
+
 class OBJECT_OT_planet(bpy.types.Operator):
     """
     Create planet menu entry
@@ -187,7 +213,7 @@ class OBJECT_OT_planet(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        scenes.isosurface.isosurface(Planet())
+        scenes.isosurface.isosurface(Planet(bpy.context.scene.planet_sphere_radius))
         return {'FINISHED'}
 
 
@@ -213,6 +239,7 @@ class OBJECT_MT_fractals(bpy.types.Menu):
         layout.operator(OBJECT_OT_torus.bl_idname)
         layout.operator(OBJECT_OT_revolution.bl_idname)
 
+
 class add_torus(bpy.types.Operator):
     """
     Create torus menu entry
@@ -225,7 +252,6 @@ class add_torus(bpy.types.Operator):
     def execute(self, context):
         scenes.torus.torus()
         return {'FINISHED'}
-
 
 
 class add_platonic_solids(bpy.types.Operator):
@@ -252,7 +278,7 @@ class add_tetrahedron(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        scenes.tetahedron.fractal_tetrahedron(6)
+        scenes.tetahedron.fractal_tetrahedron(bpy.context.scene.fractals_iteration)
         return {'FINISHED'}
 
 
@@ -271,20 +297,21 @@ def register():
     Register components in Blender
     """
 
-
     reload_modules_main()
-    """
-    importlib.reload(locals()[utils])
-    bpy.utils.register_class(utils.BlenderUtils)
-    """
-    bpy.types.Scene.step_size = bpy.props.FloatProperty(name="StepSize", precision=4)
-    bpy.types.Scene.grid_size = bpy.props.FloatProperty(name="GridSize")
-
+    bpy.types.Scene.step_size = bpy.props.FloatProperty(name="StepSize", precision=4, default=0.5, min=0.0001, max=2.)
+    bpy.types.Scene.grid_size = bpy.props.FloatProperty(name="GridSize", default=3., min=0., max=20.)
+    bpy.types.Scene.fractals_iteration = bpy.props.IntProperty(name="FractalsIterations", default=5, min=1, max=20)
+    bpy.types.Scene.planet_sphere_radius = bpy.props.IntProperty(name="PlanetSphereRadius", default=1, min=0, max=100)
+    bpy.types.Scene.heart_stretch_fractor = bpy.props.IntProperty(name="HeartStretchFactor", default=0, min=0, max=100)
+    bpy.types.Scene.mandelbulb_degree = bpy.props.IntProperty(name="MandelbulbDegree", default=3, min=0, max=10)
+    bpy.types.Scene.torus_fradius = bpy.props.FloatProperty(name="TorusFRadius", default=2., min=0., max=100.)
+    bpy.types.Scene.torus_sradius = bpy.props.FloatProperty(name="TorusSRadius", default=1., min=0., max=100.)
+    bpy.types.Scene.revolution_height = bpy.props.FloatProperty(name="RevolutionHeight", default=2.2, min=0., max=100.)
+    bpy.types.Scene.revolution_radius = bpy.props.FloatProperty(name="RevolutionRadius", default=3.02, min=0., max=100.)
+    bpy.types.Scene.moebius_curve = bpy.props.FloatProperty(name="MoebiusCurve", default=0.8, min=0., max=10.)
+    bpy.types.Scene.mandelbox_scale = bpy.props.FloatProperty(name="MandelboxScale", default=2.5, min=0., max=100.)
 
     bpy.utils.register_class(PARAMS_PT_panel)
-
-    # bpy.context.scene.step_size = 0.05
-    # bpy.context.scene.grid_size = 4.
 
     bpy.utils.register_class(add_platonic_solids)
     bpy.utils.register_class(add_tetrahedron)
@@ -350,20 +377,7 @@ def reload_modules_main():
     importlib.reload(scenes.Map)
     importlib.reload(scenes.platonicSolid)
 
-    """
-    importlib.reload(BlenderUtils)
-    importlib.reload(marching_cubes)
-    importlib.reload(Torus)
-    importlib.reload(tetahedron)
-    importlib.reload(IsoSurfaceGenerator)
-    importlib.reload(Materials)
-    importlib.reload(PlatonicSolid)
-    importlib.reload(torus)
-    importlib.reload(tetahedron)
-    importlib.reload(isosurface)
-    importlib.reload(Map)
-    importlib.reload(platonicSolid)
-    """
 
 if __name__ == "__main__":
     register()
+
