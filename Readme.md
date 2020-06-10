@@ -8,8 +8,7 @@ This is a learning project which aims to create procedural mesh that will be ren
 |-----------------------|----------------------------------------------------------------|
 | Procedural meshes     | Torus                                                          |
 | Marching cubes        | Done (slow version)                                            |
-| Isosurface rendering  | Done (See implemented objects in objectS/IsoSurfaceGenerator.py|
-| L - System            | In dev                                                         |
+| Isosurface rendering  | Done (See implemented objects in objects/IsoSurfaceGenerator.py|
 | Terrain generator     | Done                                                           |
 
 ### Install
@@ -27,7 +26,7 @@ will be applyed on the next Blender startup.
 
 3. Enable the addon in : Edit / Preferences / Addons / "Add Mesh : IN55 Project"
 
-![Enabl](output/tuto2.png)
+![Enable](output/tuto2.png)
 
 You can now find on the right panel the panel "Marching cubes" which let you change your settings.
 
