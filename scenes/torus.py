@@ -1,16 +1,12 @@
 import bpy
 import bmesh
-"""
-import utils.BlenderUtils
-from objects.Torus import Torus
-import objects.Materials
-"""
+import mathutils
 
 from BlenderGenerator.utils import BlenderUtils
 from BlenderGenerator.objects.Torus import Torus
 from BlenderGenerator.objects import Materials
 
-def torus():
+def torus(firstCircleDiameter, secondCircleDiameter):
     mesh = bpy.data.meshes.new("torus_mesh")  # add a new mesh
     obj = bpy.data.objects.new("torus", mesh)  # add a new object using the mesh
 
@@ -24,7 +20,9 @@ def torus():
     mesh = bpy.context.object.data
     bm = bmesh.new()
 
-    t = Torus()
+    t = Torus(mathutils.Vector((0, 0, 0)),
+              firstCircleDiameter,
+              secondCircleDiameter)
 
     vertices = t.vertices()
     for v in vertices:

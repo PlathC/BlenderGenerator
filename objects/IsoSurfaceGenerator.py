@@ -154,7 +154,7 @@ class MengerSponge(IsoSurface):
         return menger
 
     def material(self):
-        return objects.Materials.SmoothColor(color=(0.1, 0.1, 0.1, 0.))
+        return Materials.SmoothColor(color=(0.1, 0.1, 0.1, 0.))
 
 
 class Mandelbulb(IsoSurface):

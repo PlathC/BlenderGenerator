@@ -250,7 +250,7 @@ class add_torus(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        scenes.torus.torus()
+        scenes.torus.torus(bpy.context.scene.torus_fradius, bpy.context.scene.torus_sradius)
         return {'FINISHED'}
 
 
@@ -298,18 +298,18 @@ def register():
     """
 
     reload_modules_main()
-    bpy.types.Scene.step_size = bpy.props.FloatProperty(name="StepSize", precision=4, default=0.5, min=0.0001, max=2.)
-    bpy.types.Scene.grid_size = bpy.props.FloatProperty(name="GridSize", default=3., min=0., max=20.)
-    bpy.types.Scene.fractals_iteration = bpy.props.IntProperty(name="FractalsIterations", default=5, min=1, max=20)
-    bpy.types.Scene.planet_sphere_radius = bpy.props.IntProperty(name="PlanetSphereRadius", default=1, min=0, max=100)
-    bpy.types.Scene.heart_stretch_fractor = bpy.props.IntProperty(name="HeartStretchFactor", default=0, min=0, max=100)
-    bpy.types.Scene.mandelbulb_degree = bpy.props.IntProperty(name="MandelbulbDegree", default=3, min=0, max=10)
-    bpy.types.Scene.torus_fradius = bpy.props.FloatProperty(name="TorusFRadius", default=2., min=0., max=100.)
-    bpy.types.Scene.torus_sradius = bpy.props.FloatProperty(name="TorusSRadius", default=1., min=0., max=100.)
-    bpy.types.Scene.revolution_height = bpy.props.FloatProperty(name="RevolutionHeight", default=2.2, min=0., max=100.)
-    bpy.types.Scene.revolution_radius = bpy.props.FloatProperty(name="RevolutionRadius", default=3.02, min=0., max=100.)
-    bpy.types.Scene.moebius_curve = bpy.props.FloatProperty(name="MoebiusCurve", default=0.8, min=0., max=10.)
-    bpy.types.Scene.mandelbox_scale = bpy.props.FloatProperty(name="MandelboxScale", default=2.5, min=0., max=100.)
+    bpy.types.Scene.step_size = bpy.props.FloatProperty(name="Step Size", precision=4, default=0.5, min=0.0001, max=2.)
+    bpy.types.Scene.grid_size = bpy.props.FloatProperty(name="Grid Size", default=3., min=0., max=20.)
+    bpy.types.Scene.fractals_iteration = bpy.props.IntProperty(name="Fractals Iterations", default=5, min=1, max=20)
+    bpy.types.Scene.planet_sphere_radius = bpy.props.IntProperty(name="Planet Sphere Radius", default=1, min=0, max=100)
+    bpy.types.Scene.heart_stretch_fractor = bpy.props.IntProperty(name="Heart Stretch Factor", default=0, min=0, max=100)
+    bpy.types.Scene.mandelbulb_degree = bpy.props.IntProperty(name="Mandelbulb Degree", default=3, min=0, max=10)
+    bpy.types.Scene.torus_fradius = bpy.props.FloatProperty(name="Torus First Radius", default=2., min=0., max=100.)
+    bpy.types.Scene.torus_sradius = bpy.props.FloatProperty(name="Torus Second Radius", default=1., min=0., max=100.)
+    bpy.types.Scene.revolution_height = bpy.props.FloatProperty(name="Revolution Height", default=2.2, min=0., max=100.)
+    bpy.types.Scene.revolution_radius = bpy.props.FloatProperty(name="Revolution Radius", default=3.02, min=0., max=100.)
+    bpy.types.Scene.moebius_curve = bpy.props.FloatProperty(name="Moebius Curve", default=0.8, min=0., max=10.)
+    bpy.types.Scene.mandelbox_scale = bpy.props.FloatProperty(name="Mandelbox Scale", default=2.5, min=0., max=100.)
 
     bpy.utils.register_class(PARAMS_PT_panel)
 
