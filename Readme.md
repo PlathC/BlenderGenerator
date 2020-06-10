@@ -12,6 +12,30 @@ This is a learning project which aims to create procedural mesh that will be ren
 | L - System            | In dev                                                         |
 | Terrain generator     | Done                                                           |
 
+### Install
+
+To add this addon to your Blender you need to follow these steps :
+
+1. Clone the projet 
+
+```sh
+	git clone https://github.com/PlathC/BlenderGenerator.git
+```
+
+2. Copy the folder inside the folder <PathToBlenderInstall>/Blender/<Version>/scripts/addons. Changes 
+will be applyed on the next Blender startup.
+
+3. Enable the addon in : Edit / Preferences / Addons / "Add Mesh : IN55 Project"
+
+![Enabl](output/tuto2.png)
+
+You can now find on the right panel the panel "Marching cubes" which let you change your settings.
+
+To create mesh with the addon you can right click on the scene and find at the bottom of the small popup
+the new fields provided by the addon.
+
+![AddonPopup](output/tuto.png)
+
 ### Procedural meshes
 
 This project allows to create some procedural meshes:
