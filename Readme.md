@@ -30,7 +30,7 @@ will be applyed on the next Blender startup.
 
 You can now find on the right panel the panel "Marching cubes" which let you change your settings.
 
-To create mesh with the addon you can right click on the scene and find at the bottom of the small popup
+To create meshes with the addon you can right click on the scene and find at the bottom of the small popup
 the new fields provided by the addon.
 
 ![AddonPopup](output/tuto.png)
