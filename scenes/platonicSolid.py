@@ -3,12 +3,8 @@
 from BlenderGenerator.objects import PlatonicSolid
 
 
-def platonic_solid():
+def platonic_solid(shape):
     """
     Create the five platonic solids
     """
-    PlatonicSolid.PlatonicSolid(5, PlatonicSolid.Shape.TETRAHEDRON)
-    PlatonicSolid.PlatonicSolid(5, PlatonicSolid.Shape.HEXAHEDRON)
-    PlatonicSolid.PlatonicSolid(5, PlatonicSolid.Shape.OCTAHEDRON)
-    PlatonicSolid.PlatonicSolid(5, PlatonicSolid.Shape.DODECAHEDRON)
-    PlatonicSolid.PlatonicSolid(5, PlatonicSolid.Shape.ICOSAHEDRON)
+    PlatonicSolid.PlatonicSolid(5, shape)

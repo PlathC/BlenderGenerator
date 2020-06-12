@@ -278,15 +278,6 @@ class PlatonicSolid:
         z_rectangle.append(self.bm.verts.new((iphi, ephi, 0)))
         z_rectangle.append(self.bm.verts.new((-iphi, ephi, 0)))
 
-        """
-        The three rectangles meshes
-        self.bm.faces.new((x_rectangle[0], x_rectangle[1], x_rectangle[2]))
-        self.bm.faces.new((x_rectangle[2], x_rectangle[3], x_rectangle[0]))
-        self.bm.faces.new((y_rectangle[0], y_rectangle[1], y_rectangle[2]))
-        self.bm.faces.new((y_rectangle[2], y_rectangle[3], y_rectangle[0]))
-        self.bm.faces.new((z_rectangle[0], z_rectangle[1], z_rectangle[2]))
-        self.bm.faces.new((z_rectangle[2], z_rectangle[3], z_rectangle[0]))
-        """
 
         if hasattr(self.bm.verts, "ensure_lookup_table"):
             self.bm.verts.ensure_lookup_table()
@@ -329,76 +320,6 @@ class PlatonicSolid:
         self.bm.faces.new((y0, x0, x3))
         self.bm.faces.new((x0, y0, z0))
         self.bm.faces.new((x3, y0, z3))
-        """
-
-        self.bm.faces.new((x_rectangle[1], x_rectangle[2], y_rectangle[2]))
-        self.bm.faces.new((x_rectangle[1], y_rectangle[2], z_rectangle[1]))
-        self.bm.faces.new((x_rectangle[1], z_rectangle[0], z_rectangle[1]))
-        self.bm.faces.new((x_rectangle[1], z_rectangle[0], y_rectangle[3]))
-        self.bm.faces.new((x_rectangle[1], x_rectangle[2], y_rectangle[3]))
-
-        self.bm.faces.new((y_rectangle[2], y_rectangle[1], z_rectangle[1]))
-        self.bm.faces.new((y_rectangle[2], x_rectangle[2], z_rectangle[2]))
-        """
-
-        """
-        x = []
-        x.append(self.bm.verts.new((0, 1, -phi)))
-        x.append(self.bm.verts.new((0, 1, phi)))
-        x.append(self.bm.verts.new((0, -1, -phi)))
-        x.append(self.bm.verts.new((0, -1, phi)))
-
-        y = []
-        y.append(self.bm.verts.new((-phi, 0, 1)))
-        y.append(self.bm.verts.new((phi, 0, 1)))
-        y.append(self.bm.verts.new((-phi, 0, -1)))
-        y.append(self.bm.verts.new((phi, 0, -1)))
-
-
-        z = []
-        z.append(self.bm.verts.new((1, phi, 0)))
-        z.append(self.bm.verts.new((1, -phi, 0)))
-        z.append(self.bm.verts.new((-1, phi, 0)))
-        z.append(self.bm.verts.new((-1, -phi, 0)))
-
-        self.bm.faces.new((x[0], x[1], x[2]))
-        self.bm.faces.new((x[2], x[3], x[0]))
-        self.bm.faces.new((y[0], y[1], y[2]))
-        self.bm.faces.new((y[2], y[3], y[0]))
-        self.bm.faces.new((z[0], z[1], z[2]))
-        self.bm.faces.new((z[2], z[3], z[0]))
-        """
-
-        """
-        r = self.radius / 2
-        edge_length = r * math.sqrt(2)
-        angle_step = 2 * math.pi / 5
-
-        first_line = []
-        second_line = []
-        for i in range(0, 5):
-            x = r * math.cos(i * angle_step)
-            y = r * math.sin(i * angle_step)
-            first_line.append(self.bm.verts.new((x, y, r)))
-            x = -r * math.cos(i * angle_step + angle_step/2)
-            y = -r * math.sin(i * angle_step + angle_step/2)
-            second_line.append(self.bm.verts.new((x, y, -r)))
-
-        top = self.bm.verts.new((0, 0, 2*r))
-        bottom = self.bm.verts.new((0, 0, -2*r))
-
-        self.bm.faces.new((first_line[0], first_line[1], top))
-        self.bm.faces.new((first_line[1], first_line[2], top))
-        self.bm.faces.new((first_line[2], first_line[3], top))
-        self.bm.faces.new((first_line[3], first_line[4], top))
-        self.bm.faces.new((first_line[4], first_line[0], top))
-
-        self.bm.faces.new((second_line[0], second_line[1], bottom))
-        self.bm.faces.new((second_line[1], second_line[2], bottom))
-        self.bm.faces.new((second_line[2], second_line[3], bottom))
-        self.bm.faces.new((second_line[3], second_line[4], bottom))
-        self.bm.faces.new((second_line[4], second_line[0], bottom))
-        """
 
         self.finish_object()
 

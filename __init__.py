@@ -239,6 +239,22 @@ class OBJECT_MT_fractals(bpy.types.Menu):
         layout.operator(OBJECT_OT_torus.bl_idname)
         layout.operator(OBJECT_OT_revolution.bl_idname)
 
+class OBJECT_MT_platonic_solids(bpy.types.Menu):
+    """
+    Create platonic solids menu entry
+    """
+
+    bl_idname = 'object.platonic'
+    bl_label = 'Platonic solids'
+
+    def draw(self, context):
+        layout = self.layout
+        layout.operator(OBJECT_OT_platonic_tetrahedron.bl_idname)
+        layout.operator(OBJECT_OT_platonic_hexahedron.bl_idname)
+        layout.operator(OBJECT_OT_platonic_octahedron.bl_idname)
+        layout.operator(OBJECT_OT_platonic_dodecahedron.bl_idname)
+        layout.operator(OBJECT_OT_platonic_icosahedron.bl_idname)
+
 
 class add_torus(bpy.types.Operator):
     """
@@ -254,19 +270,71 @@ class add_torus(bpy.types.Operator):
         return {'FINISHED'}
 
 
-class add_platonic_solids(bpy.types.Operator):
+
+class OBJECT_OT_platonic_tetrahedron(bpy.types.Operator):
     """
-    Create platonic solids menu entry
+    Create tetrahedron menu entry
     """
 
-    bl_idname = "mesh.platonic_solids"
-    bl_label = "Platonic Solids"
+    bl_idname = "mesh.platonic_tetrahedron"
+    bl_label = "Tetrahedron"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        scenes.platonicSolid.platonic_solid()
+        scenes.platonicSolid.platonic_solid(PlatonicSolid.Shape.TETRAHEDRON)
         return {'FINISHED'}
 
+class OBJECT_OT_platonic_hexahedron(bpy.types.Operator):
+    """
+    Create hexahedron menu entry
+    """
+
+    bl_idname = "mesh.platonic_hexahedron"
+    bl_label = "Hexahedron"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        scenes.platonicSolid.platonic_solid(PlatonicSolid.Shape.HEXAHEDRON)
+        return {'FINISHED'}
+
+class OBJECT_OT_platonic_octahedron(bpy.types.Operator):
+    """
+    Create octahedron menu entry
+    """
+
+    bl_idname = "mesh.platonic_octahedron"
+    bl_label = "Octahedron"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        scenes.platonicSolid.platonic_solid(PlatonicSolid.Shape.OCTAHEDRON)
+        return {'FINISHED'}
+
+class OBJECT_OT_platonic_dodecahedron(bpy.types.Operator):
+    """
+    Create dodecahedron menu entry
+    """
+
+    bl_idname = "mesh.platonic_dodecahedron"
+    bl_label = "Dodecahedron"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        scenes.platonicSolid.platonic_solid(PlatonicSolid.Shape.DODECAHEDRON)
+        return {'FINISHED'}
+
+class OBJECT_OT_platonic_icosahedron(bpy.types.Operator):
+    """
+    Create icosahedron menu entry
+    """
+
+    bl_idname = "mesh.platonic_icosahedron"
+    bl_label = "Icosahedron"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        scenes.platonicSolid.platonic_solid(PlatonicSolid.Shape.ICOSAHEDRON)
+        return {'FINISHED'}
 
 class add_tetrahedron(bpy.types.Operator):
     """
@@ -286,10 +354,10 @@ def menu_func(self, context):
     """
     Add to context menu the three new entries
     """
-    self.layout.operator(add_platonic_solids.bl_idname, icon='MOD_SUBSURF')
     self.layout.operator(add_tetrahedron.bl_idname, icon='MOD_SUBSURF')
     self.layout.operator(add_torus.bl_idname, icon='MOD_SUBSURF')
-    self.layout.menu(OBJECT_MT_fractals.bl_idname)
+    self.layout.menu(OBJECT_MT_fractals.bl_idname, icon='MOD_SUBSURF')
+    self.layout.menu(OBJECT_MT_platonic_solids.bl_idname, icon='MOD_SUBSURF')
 
 
 def register():
@@ -313,7 +381,11 @@ def register():
 
     bpy.utils.register_class(PARAMS_PT_panel)
 
-    bpy.utils.register_class(add_platonic_solids)
+    bpy.utils.register_class(OBJECT_OT_platonic_tetrahedron)
+    bpy.utils.register_class(OBJECT_OT_platonic_dodecahedron)
+    bpy.utils.register_class(OBJECT_OT_platonic_hexahedron)
+    bpy.utils.register_class(OBJECT_OT_platonic_icosahedron)
+    bpy.utils.register_class(OBJECT_OT_platonic_octahedron)
     bpy.utils.register_class(add_tetrahedron)
     bpy.utils.register_class(add_torus)
 
@@ -330,6 +402,7 @@ def register():
     bpy.utils.register_class(OBJECT_OT_sphere)
 
     bpy.utils.register_class(OBJECT_MT_fractals)
+    bpy.utils.register_class(OBJECT_MT_platonic_solids)
     bpy.types.VIEW3D_MT_object_context_menu.append(menu_func)
 
 
@@ -340,7 +413,12 @@ def unregister():
 
     bpy.utils.unregister_class(PARAMS_PT_panel)
 
-    bpy.utils.unregister_class(add_platonic_solids)
+    bpy.utils.unregister_class(OBJECT_OT_platonic_tetrahedron)
+    bpy.utils.unregister_class(OBJECT_OT_platonic_dodecahedron)
+    bpy.utils.unregister_class(OBJECT_OT_platonic_hexahedron)
+    bpy.utils.unregister_class(OBJECT_OT_platonic_icosahedron)
+    bpy.utils.unregister_class(OBJECT_OT_platonic_octahedron)
+
     bpy.utils.unregister_class(add_tetrahedron)
     bpy.utils.unregister_class(add_torus)
 
@@ -356,6 +434,7 @@ def unregister():
     bpy.utils.unregister_class(OBJECT_OT_torus)
     bpy.utils.unregister_class(OBJECT_OT_sphere)
     bpy.utils.unregister_class(OBJECT_MT_fractals)
+    bpy.utils.unregister_class(OBJECT_MT_platonic_solids)
     bpy.types.VIEW3D_MT_object_context_menu.remove(menu_func)
 
 

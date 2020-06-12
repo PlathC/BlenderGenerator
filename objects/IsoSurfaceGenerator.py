@@ -352,45 +352,6 @@ class Mandelbox(IsoSurface):
         return Materials.SmoothColor(color=(1., 1., 1., 1.))
 
 
-class Julia(IsoSurface):
-    """
-    Julia isosurface
-    """
-    def isovalue(self):
-        return 1.
-
-    def qsqr(self, a):
-        """
-        square a quaterion
-        :param a: The quaternion to square
-        :return: The square of a
-        """
-        return mathutils.Vector((a.x * a.x - a.y * a.y - a.z * a.z - a.w * a.w,
-                                 2.0 * a.x * a.y,
-                                 2.0 * a.x * a.z,
-                                 2.0 * a.x * a.w))
-
-    def test_point(self, point):
-        z = mathutils.Vector((point.x, point.y, point.z, 0.0))
-        md2 = 1.0
-        mz2 = z.dot(z)
-        trap = mathutils.Vector((math.fabs(point.x), math.fabs(point.y), math.fabs(point.z), z.dot(z)))
-        n = 1.0
-        for i in range(0, 4):
-            md2 = md2 * mz2
-            c = mathutils.Vector((0.10, 0.40, 0.40, 0.40))
-            z = self.qsqr(z).xyzw + c.xyzw
-            if trap > mathutils.Vector((math.fabs(point.x), math.fabs(point.y), math.fabs(point.z),z.dot(z))):
-                trap = mathutils.Vector((math.fabs(point.x), math.fabs(point.y), math.fabs(point.z),z.dot(z)))
-            mz2 = z.dot(z)
-            if mz2>4.0:
-                break
-            n = n+1
-
-        return 0.25 * math.sqrt( mz2 / md2) * math.pow(2, -n) * math.log(mz2)
-
-    def material(self):
-        return Materials.SmoothColor(color=(1., 1., 1., 1.))
 
 
 
