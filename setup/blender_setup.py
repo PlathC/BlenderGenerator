@@ -7,6 +7,7 @@ import bpy
 import sys, os
 import importlib
 
+# Paths of BlenderGenerator folder and his parent folder
 #paths = ["D:\\Documents\\Cours\\UTBM\\S2\\IN55\\", "D:\\Documents\\Cours\\UTBM\\S2\\IN55\\BlenderGenerator"]
 paths = ["D:\\Projets\\Blender\\", "D:\\Projets\\Blender\\BlenderGenerator"]
 for path in paths:

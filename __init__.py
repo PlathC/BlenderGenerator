@@ -1,3 +1,7 @@
+"""
+File called during launching Blender
+"""
+
 import importlib
 
 from BlenderGenerator.utils import BlenderUtils
@@ -459,4 +463,3 @@ def reload_modules_main():
 
 if __name__ == "__main__":
     register()
-

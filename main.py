@@ -1,3 +1,7 @@
+"""
+Called when manually import script in Blender Console
+"""
+
 import importlib
 import utils.BlenderUtils
 import utils.marching_cubes
