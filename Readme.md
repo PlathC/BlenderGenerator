@@ -58,26 +58,17 @@ Here are some outputs of Mandelbulb:
 
 
 <p align="center">
-	<img src="output/Resized/Mandelbrot.png" alt="Mandelbulb"/> <img src="output/Resized/Mandelbrot2.png" alt="Mandelbulb"/>
-</p>
-
-
-<p align="center">
-	<img src="output/Resized/Mandelbrot3.png" alt="Mandelbulb"/> <img src="output/Resized/Mandelbulb4.png" alt="Mandelbulb"/>
+	<img src="output/Resized/Mandelbrot.png" alt="Mandelbulb"/> <img src="output/Resized/Mandelbrot2.png" alt="Mandelbulb"/> <img src="output/Resized/Mandelbrot3.png" alt="Mandelbulb"/> <img src="output/Resized/Mandelbulb4.png" alt="Mandelbulb"/>
 </p>
 
 __High resolution outputs :__
 
 <p align="center">
-	<img src="output/Resized/MandelbulbHighRes.png" alt="MandelbulbHighRes"/> <img src="output/Resized/MandelbulbHighRes1.png" alt="MandelbulbHighRes"/> 
+	<img src="output/Resized/MandelbulbHighRes.png" alt="MandelbulbHighRes"/> <img src="output/Resized/MandelbulbHighRes1.png" alt="MandelbulbHighRes"/> <img src="output/Resized/MengerSponge.png" alt="MengerSponge"/>
 </p>
 
 <p align="center">
-	<img src="output/Resized/MengerSponge.png" alt="MengerSponge"/> <img src="output/Resized/Mandelbox.png" alt="Mandelbox"/> 
-</p>
-
-<p align="center">
-	<img src="output/Resized/Mandelbox1.png" alt="Mandelbox"/> 
+	 <img src="output/Resized/Mandelbox.png" alt="Mandelbox"/> <img src="output/Resized/Mandelbox1.png" alt="Mandelbox"/> 
 </p>
 
 ### Terrain 
