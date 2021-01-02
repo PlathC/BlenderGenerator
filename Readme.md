@@ -26,24 +26,26 @@ will be applyed on the next Blender startup.
 
 3. Enable the addon in : Edit / Preferences / Addons / "Add Mesh : IN55 Project"
 
-![Enable](output/tuto2.png)
+<p align="center">
+	<img src="output/tuto2.png" alt="Enable"/>
+</p>
 
 You can now find on the right panel the panel "Marching cubes" which let you change your settings.
 
 To create meshes with the addon you can right click on the scene and find at the bottom of the small popup
 the new fields provided by the addon.
 
-![AddonPopup](output/tuto.png)
+<p align="center">
+	<img src="output/tuto.png" alt="AddonPopup"/>
+</p>
 
 ### Procedural meshes
 
 This project allows to create some procedural meshes:
 
-![Torus](output/Resized/TorusPP1.png)
-
-Tetahedron
-
-![Tetahedron](output/Resized/Tetahedron.png) 
+<p align="center">
+	<img src="output/Resized/TorusPP1.png" alt="Torus"/> <img src="output/Resized/Tetahedron.png" alt="Tetahedron"/>
+</p>
 
 ### Marching cubes
 
@@ -54,41 +56,37 @@ __Results__:
 
 Here are some outputs of Mandelbulb:
 
-![Mandelbulb](output/Resized/Mandelbrot.png) ![Mandelbulb](output/Resized/Mandelbrot2.png)
 
-![Mandelbulb](output/Resized/Mandelbrot3.png) ![Mandelbulb](output/Resized/Mandelbulb4.png) 
+<p align="center">
+	<img src="output/Resized/Mandelbrot.png" alt="Mandelbulb"/> <img src="output/Resized/Mandelbrot2.png" alt="Mandelbulb"/>
+</p>
+
+
+<p align="center">
+	<img src="output/Resized/Mandelbrot3.png" alt="Mandelbulb"/> <img src="output/Resized/Mandelbulb4.png" alt="Mandelbulb"/>
+</p>
 
 __High resolution outputs :__
 
-Mandelbulb grid_size=2.5, step_size=0.005, max_iterations=6, degree=8
+<p align="center">
+	<img src="output/Resized/MandelbulbHighRes.png" alt="MandelbulbHighRes"/> <img src="output/Resized/MandelbulbHighRes1.png" alt="MandelbulbHighRes"/> 
+</p>
 
-![MandelbulbHighRes](output/Resized/MandelbulbHighRes.png)
+<p align="center">
+	<img src="output/Resized/MengerSponge.png" alt="MengerSponge"/> <img src="output/Resized/Mandelbox.png" alt="Mandelbox"/> 
+</p>
 
-Mandelbulb grid_size=2.7, step_size=0.005, max_iterations=5, degree=3
-
-![MandelbulbHighRes](output/Resized/MandelbulbHighRes1.png)
-
-Menger Sponge :
-
-![MengerSponge](output/Resized/MengerSponge.png) 
-
-Mandelbox grid_size=2, step_size=0.005, iterations=6, seed=[2, -2, -2]
-
-![Mandelbox](output/Resized/Mandelbox.png) 
-
-![Mandelbox](output/Resized/Mandelbox1.png) 
+<p align="center">
+	<img src="output/Resized/Mandelbox1.png" alt="Mandelbox"/> 
+</p>
 
 ### Terrain 
 
 A terrain generator has been implemented based on different technologies:
 
-__Marching cubes and noise__
-
-![NoiseTerrain](output/Resized/NoiseTerrain.png)
-
-__Shader and noise based map__
-
-![NoiseTerrain](output/Resized/Map.png)
+<p align="center">
+	<img src="output/Resized/NoiseTerrain.png" alt="NoiseTerrain"/> <img src="output/Resized/Map.png" alt="NoiseTerrain"/> 
+</p>
 
 ### Contributors
 
